@@ -25,6 +25,22 @@
             <artifactId>jabm</artifactId>
             <version>0.8</version>
         </dependency>
+
+
+        <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.10</version>
+        <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <version>8.7</version>
+        </dependency>
+
     </dependencies>
 
 

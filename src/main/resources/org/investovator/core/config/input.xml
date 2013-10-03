@@ -1,0 +1,20 @@
+<beans>
+    <bean id="transactionPriceTimeSeriesReport$Stock" class="net.sourceforge.jabm.report.SimEventReport">
+        <property name="eventPrototype">
+            <bean class="net.sourceforge.jasa.event.TransactionExecutedEvent">
+            </bean>
+        </property>
+        <property name="reportVariables" ref="transactionPriceTimeSeries$Stock"/>
+    </bean>
+
+    <bean id="transactionPriceTimeSeries$Stock" class="net.sourceforge.jabm.report.SeriesReportVariables">
+        <property name="reportVariables" ref="transactionPriceReportVariables$Stock"/>
+    </bean>
+
+
+    <bean id="transactionPriceReportVariables$Stock"
+          class="net.sourceforge.jasa.report.TransactionPriceReportVariables">
+    </bean>
+
+
+</beans>
