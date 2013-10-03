@@ -27,7 +27,6 @@ public class ReportBeanGenerator {
     public File generateXML(String stockID){
 
         String textToFind = "transactionPriceTimeSeriesReport$Stock";
-        String textToReplace = stockID;
 
         String filepath = getClass().getResource("input.xml").getPath();
         String fileToBeSaved = "out.xml";
@@ -42,7 +41,7 @@ public class ReportBeanGenerator {
 
 
             // change ATTRIBUTES
-            String xPathExpressionAttr = "//@id|//@ref";
+            String xPathExpressionAttr = "//@id|//@ref|//@bean";
             NodeList nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, doc, XPathConstants.NODESET);
 
             String resultAtt ;
