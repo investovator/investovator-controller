@@ -12,7 +12,7 @@ public class ReportBeanGeneratorTest {
 
         ReportBeanGenerator gen = new ReportBeanGenerator(null);
 
-        gen.generateXML("GOOG");
+        gen.generateXML("IBM");
 
 
     }
