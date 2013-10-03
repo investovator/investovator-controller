@@ -18,24 +18,28 @@ import org.w3c.dom.*;
 public class ReportBeanGenerator {
 
     File templateXML;
+    String fileToBeSaved = "out.xml";
 
     public ReportBeanGenerator(File templateFile){
         this.templateXML = templateFile;
     }
 
 
+    public void setOutputPath(String path){
+        fileToBeSaved = path;
+    }
+
+
     public File generateXML(String stockID){
 
-        String textToFind = "transactionPriceTimeSeriesReport$Stock";
+        String filePath = getClass().getResource("report_template.xml").getPath();
 
-        String filepath = getClass().getResource("input.xml").getPath();
-        String fileToBeSaved = "out.xml";
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;
         try {
             docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(filepath);
+            Document doc = docBuilder.parse(filePath);
 
             XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -52,8 +56,6 @@ public class ReportBeanGenerator {
                 nodesAttr.item(i).setTextContent(resultAtt);
             }
 
-            System.out.println("Everything replaced.");
-
             // save xml file back
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -63,17 +65,17 @@ public class ReportBeanGenerator {
 
 
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (SAXException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (TransformerConfigurationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (TransformerException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (XPathExpressionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         return null;
