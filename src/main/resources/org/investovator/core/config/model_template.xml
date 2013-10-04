@@ -117,8 +117,7 @@
         </property>
     </bean>
 
-    <!--  The population consists of 200 agents using linear-combination
-            forecasting rules -->
+
     <bean id="linearCombinationTraders"
           scope="simulation" class="net.sourceforge.jabm.agent.AgentList"
           init-method="populateFromFactory">
