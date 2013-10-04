@@ -9,7 +9,11 @@ import org.junit.Test;
 public class ModelGeneratorTest {
     @Test
     public void testGetSupportedAgentTypes() throws Exception {
-        ModelGenerator generator = new ModelGenerator(ModelGenerator.class.getResource("model_template.xml").getPath());
-        generator.getSupportedAgentTypes();
+        ModelGenerator generator = new ModelGenerator(ModelGenerator.class.getResource("new_template.xml").getPath());
+        String[] result = generator.getSupportedAgentTypes();
+
+        for (int i = 0; i < result.length; i++) {
+            System.out.println(result[i]);
+        }
     }
 }
