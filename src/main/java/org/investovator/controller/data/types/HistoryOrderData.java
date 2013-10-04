@@ -1,4 +1,4 @@
-package org.investovator.core.data.types;
+package org.investovator.controller.data.types;
 
 /**
  * @author: ishan

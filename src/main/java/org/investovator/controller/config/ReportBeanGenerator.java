@@ -1,4 +1,4 @@
-package org.investovator.core.config;
+package org.investovator.controller.config;
 
 import org.xml.sax.SAXException;
 

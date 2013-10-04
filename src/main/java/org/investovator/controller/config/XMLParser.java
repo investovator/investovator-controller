@@ -1,7 +1,6 @@
-package org.investovator.core.config;
+package org.investovator.controller.config;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;

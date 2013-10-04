@@ -1,10 +1,4 @@
-package org.investovator.core.config;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.xml.xpath.XPathConstants;
+package org.investovator.controller.config;
 
 /**
  * @author Amila Surendra

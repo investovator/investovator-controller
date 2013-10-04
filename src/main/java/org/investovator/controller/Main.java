@@ -1,4 +1,4 @@
-package org.investovator.core;
+package org.investovator.controller;
 
 
 /**
