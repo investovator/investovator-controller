@@ -1,6 +1,6 @@
-package org.investovator.core.org.investovator.data;
+package org.investovator.core.data;
 
-import org.investovator.core.org.investovator.data.types.HistoryOrderData;
+import org.investovator.core.data.types.HistoryOrderData;
 import org.investovator.data.excel.HistoryData;
 
 import java.util.Date;
