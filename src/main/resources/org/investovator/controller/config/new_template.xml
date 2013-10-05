@@ -2,6 +2,7 @@
 
 <investovator-config>
 
+    <!--This is better to create from scratch i guess-->
     <simulation>
         <bean id="stock" class="net.sourceforge.jasa.market.MarketSimulation"
               scope="singleton">
