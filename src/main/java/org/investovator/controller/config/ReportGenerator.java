@@ -15,18 +15,70 @@ import org.w3c.dom.*;
  * @author Amila Surendra
  * @version $Revision
  */
-public class ReportBeanGenerator {
+public class ReportGenerator {
 
-    File templateXML;
+    Document templateDoc;
+    XMLParser parser;
     String fileToBeSaved = "out.xml";
 
-    public ReportBeanGenerator(File templateFile){
-        this.templateXML = templateFile;
+    public ReportGenerator(String templateFile){
+        parser = new XMLParser(templateFile);
+        this.templateDoc = parser.getXMLDocumentModel();
     }
 
 
     public void setOutputPath(String path){
         fileToBeSaved = path;
+    }
+
+
+    public String[] getSupportedReports(){
+
+        String[] agentNames;
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = "//reports/report/@name";
+
+        NodeList nodesAttr = null;
+        try {
+            nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+        agentNames = new String[nodesAttr.getLength()];
+
+        for(int i=0; i<agentNames.length; i++) {
+            agentNames[i] = nodesAttr.item(i).getTextContent();
+        }
+
+        return agentNames;
+    }
+
+    public String[] getDependencyReportBeans(String reportType){
+
+        String[] beannames;
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = String.format("//reports/report[@name=\"%s\"]/*", reportType);
+
+        NodeList nodesAttr = null;
+
+        try {
+            nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+        beannames = new String[nodesAttr.getLength()];
+
+        for(int i=0; i<beannames.length; i++) {
+            beannames[i] = nodesAttr.item(i).getTextContent();
+        }
+
+        return beannames;
     }
 
 
