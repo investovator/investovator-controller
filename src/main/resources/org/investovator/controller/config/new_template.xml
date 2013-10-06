@@ -17,7 +17,7 @@
 
             <property name="reports">
                 <list>
-
+                   <report-list/>
                 </list>
             </property>
 

@@ -34,6 +34,11 @@ public class ModelGeneratorTest {
         generator.addAgent(generator.getSupportedAgentTypes()[0],120);
         generator.addAgent(generator.getSupportedAgentTypes()[1],100);
 
+        ReportGenerator gen = new ReportGenerator(ModelGenerator.class.getResource("report_template.xml").getPath());
+        String[] types = gen.getSupportedReports();
+        String[] result = gen.getDependencyReportBeans(types[0]);
+
+        generator.addDependencyReportBean(result);
 
         generator.createModelConfig();
 

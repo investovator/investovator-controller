@@ -13,6 +13,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -26,9 +27,12 @@ public class ModelGenerator {
     Document templateDoc;
     Document outputDoc;
 
+    String stockID = "GOOG";
+
     /*Variables for storing external properties*/
     HashMap<String,AgentProperties> agentProperties;
 
+    ArrayList<String> reports;
 
 
     public ModelGenerator(String templateFile){
@@ -37,6 +41,7 @@ public class ModelGenerator {
 
         /*Initialization*/
         agentProperties = new HashMap<String, AgentProperties>();
+        reports = new ArrayList<String>();
     }
 
     /**
@@ -78,6 +83,13 @@ public class ModelGenerator {
         agentProperties.put(agentType,properties);
     }
 
+    public void addDependencyReportBean(String[] beanNames){
+
+        for (String beanName : beanNames) {
+            reports.add(beanName);
+        }
+    }
+
 
     public void createModelConfig(){
 
@@ -96,9 +108,11 @@ public class ModelGenerator {
         outputDoc.appendChild(rootElement);
 
 
-        addGlobalDependencies(rootElement);
+        //addGlobalDependencies(rootElement);
 
-        addAgents(rootElement);
+        //addAgents(rootElement);
+
+        addController(rootElement,null); //Currently doesn't use replacements
 
         createXML();
 
@@ -126,19 +140,74 @@ public class ModelGenerator {
         NodeList nodesAttr = null;
         try {
             nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
-            HashMap<String,String> replacements = new HashMap<String, String>();
 
             for (int i = 0; i < nodesAttr.getLength(); i++) {
 
                 Node result = outputDoc.importNode(nodesAttr.item(i), true);
                 rootElement.appendChild( result );
 
-                replacePlaceHolder(result, "$stockID","GOOG");
+                replacePlaceHolder(result, "$stockID",stockID);
 
             }
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    private void addController(Element parent, HashMap<String,String> replacements){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = "/investovator-config/controller/*";
+
+        Element controllerElement = null;
+        try {
+            controllerElement = (Element) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODE);
+
+
+                Element result = (Element) outputDoc.importNode(controllerElement, true);
+                parent.appendChild( result );
+                replaceReportsPlaceholder(result);
+                replacePlaceHolder(result, "$stockID", stockID);
+
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void replaceReportsPlaceholder(Element controllerBean){
+
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        String xPathExpressionAttr = "//report-list";
+
+        try {
+            Node reportListElement = (Node) xpath.evaluate(xPathExpressionAttr, controllerBean, XPathConstants.NODE);
+
+            Element parent = (Element) reportListElement.getParentNode();
+            parent.setTextContent("");
+            Node tmp;
+
+            for (String beanName : reports) {
+                tmp = outputDoc.createElement("ref");
+                NamedNodeMap attribs = tmp.getAttributes();
+                Attr bean = outputDoc.createAttribute("bean");
+                bean.setValue(beanName);
+                attribs.setNamedItem(bean);
+                parent.appendChild(tmp);
+            }
+
+
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
