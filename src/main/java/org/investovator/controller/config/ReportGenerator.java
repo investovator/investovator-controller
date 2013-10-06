@@ -56,6 +56,31 @@ public class ReportGenerator {
         return agentNames;
     }
 
+    public String[] getDependencyReportBeans(String reportType){
+
+        String[] beannames;
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = String.format("//reports/report[@name=\"%s\"]/*", reportType);
+
+        NodeList nodesAttr = null;
+
+        try {
+            nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+        beannames = new String[nodesAttr.getLength()];
+
+        for(int i=0; i<beannames.length; i++) {
+            beannames[i] = nodesAttr.item(i).getTextContent();
+        }
+
+        return beannames;
+    }
+
 
     public File generateXML(String stockID){
 
