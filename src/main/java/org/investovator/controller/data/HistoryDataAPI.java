@@ -1,7 +1,7 @@
 package org.investovator.controller.data;
 
 import org.investovator.controller.data.types.HistoryOrderData;
-import org.investovator.data.excel.HistoryData;
+import org.investovator.core.excelimporter.HistoryData;
 
 import java.util.Date;
 
