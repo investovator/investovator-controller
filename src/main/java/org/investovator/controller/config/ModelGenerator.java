@@ -17,6 +17,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -28,9 +29,17 @@ public class ModelGenerator {
     XMLParser parser;
     Document templateDoc;
 
+    /*Variables for storing external properties*/
+    HashMap<String,AgentProperties> agentProperties;
+
+
+
     public ModelGenerator(String templateFile){
         parser = new XMLParser(templateFile);
-        templateDoc = parser.getXMLDocumentModel();;
+        templateDoc = parser.getXMLDocumentModel();
+
+        /*Initialization*/
+        agentProperties = new HashMap<String, AgentProperties>();
     }
 
     /**
@@ -49,7 +58,7 @@ public class ModelGenerator {
         try {
             nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
         } catch (XPathExpressionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         agentNames = new String[nodesAttr.getLength()];
@@ -59,6 +68,17 @@ public class ModelGenerator {
         }
 
         return agentNames;
+    }
+
+    /**
+     * Adds the AgentType with given population size.
+     * @param agentType
+     * @param agentPopulationSize
+     */
+    public void addAgent(String agentType, int agentPopulationSize){
+        AgentProperties properties = new AgentProperties();
+        properties.size = agentPopulationSize;
+        agentProperties.put(agentType,properties);
     }
 
 
@@ -88,11 +108,18 @@ public class ModelGenerator {
     }
 
 
-    public void addAgents(Element rootElement, Document doc){
+    private void addAgents(Element rootElement, Document doc){
 
-        addAgent(getSupportedAgentTypes()[0],100,rootElement,doc);
+        Iterator agentIterator = agentProperties.keySet().iterator();
 
+        while (agentIterator.hasNext()) {
+            String next = agentIterator.next().toString();
+            AgentProperties properties = agentProperties.get(next);
+
+            addAgent(next,properties.size,rootElement,doc);
+        }
     }
+
 
     private void addGlobalDependencies(Document doc, Element rootElement){
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -109,7 +136,7 @@ public class ModelGenerator {
 
 
         } catch (XPathExpressionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -126,32 +153,27 @@ public class ModelGenerator {
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         } catch (TransformerException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
 
     private void addAgent(String agent, int size ,Element rootElement, Document doc) {
 
-
             XPath xpath = XPathFactory.newInstance().newXPath();
-
             String agentExpr = String.format("//agents//agent[@name=\"%s\"]/agent-bean/*", agent);
-
-
 
         try {
             Element agentBean = (Element) xpath.evaluate(agentExpr, templateDoc, XPathConstants.NODE);
 
             HashMap<String,String> replacements = new HashMap<String, String>();
-            replacements.put("$population_size","100");
+            replacements.put("$population_size",Integer.toString(size));
 
             rootElement.appendChild(getElementReplacing(agentBean, replacements,doc));
 
         } catch (XPathExpressionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
-
 
     }
 
@@ -178,13 +200,15 @@ public class ModelGenerator {
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
             }
-
-
-
         }
-
         Element importedElement = (Element) doc.importNode(original,true);
         return  importedElement;
     }
 
+
+    class AgentProperties{
+        int size;
+    }
+
 }
+

@@ -31,6 +31,8 @@ public class ModelGeneratorTest {
     @Test
     public void testCreateModelConfig() throws Exception{
 
+        generator.addAgent(generator.getSupportedAgentTypes()[0],120);
+
         generator.createModelConfig();
 
     }
