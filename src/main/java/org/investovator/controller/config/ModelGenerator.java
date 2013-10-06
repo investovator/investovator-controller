@@ -5,10 +5,7 @@ import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -16,6 +13,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,6 +26,7 @@ public class ModelGenerator {
 
     XMLParser parser;
     Document templateDoc;
+    Document outputDoc;
 
     /*Variables for storing external properties*/
     HashMap<String,AgentProperties> agentProperties;
@@ -94,21 +93,21 @@ public class ModelGenerator {
         }
 
         // root elements
-        Document doc = docBuilder.newDocument();
-        Element rootElement = doc.createElement("beans");
-        doc.appendChild(rootElement);
+        outputDoc = docBuilder.newDocument();
+        Element rootElement = outputDoc.createElement("beans");
+        outputDoc.appendChild(rootElement);
 
 
         //addGlobalDependencies(doc,rootElement);
 
-        addAgents(rootElement, doc);
+        addAgents(rootElement);
 
-        createXML(doc);
+        createXML();
 
     }
 
 
-    private void addAgents(Element rootElement, Document doc){
+    private void addAgents(Element rootElement){
 
         Iterator agentIterator = agentProperties.keySet().iterator();
 
@@ -116,12 +115,12 @@ public class ModelGenerator {
             String next = agentIterator.next().toString();
             AgentProperties properties = agentProperties.get(next);
 
-            addAgent(next,properties.size,rootElement,doc);
+            addAgent(next,properties.size,rootElement);
         }
     }
 
 
-    private void addGlobalDependencies(Document doc, Element rootElement){
+    private void addGlobalDependencies(Element rootElement){
         XPath xpath = XPathFactory.newInstance().newXPath();
 
         String xPathExpressionAttr = "/investovator-config/global-dependencies/*";
@@ -131,7 +130,7 @@ public class ModelGenerator {
             nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
 
             for (int i = 0; i < nodesAttr.getLength(); i++) {
-                rootElement.appendChild( doc.importNode(nodesAttr.item(i),true) );
+                rootElement.appendChild( outputDoc.importNode(nodesAttr.item(i),true) );
             }
 
 
@@ -141,12 +140,12 @@ public class ModelGenerator {
     }
 
 
-    private void createXML(Document doc){
+    private void createXML(){
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = null;
         try {
             transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
+            DOMSource source = new DOMSource(outputDoc);
             StreamResult result = new StreamResult(new File("out.xml"));
             transformer.transform(source, result);
 
@@ -158,7 +157,7 @@ public class ModelGenerator {
     }
 
 
-    private void addAgent(String agent, int size ,Element rootElement, Document doc) {
+    private void addAgent(String agent, int size ,Element rootElement) {
 
             XPath xpath = XPathFactory.newInstance().newXPath();
             String agentExpr = String.format("//agents//agent[@name=\"%s\"]/agent-bean/*", agent);
@@ -169,7 +168,7 @@ public class ModelGenerator {
             HashMap<String,String> replacements = new HashMap<String, String>();
             replacements.put("$population_size",Integer.toString(size));
 
-            rootElement.appendChild(getElementReplacing(agentBean, replacements,doc));
+            addElementReplacing(agentBean, replacements,rootElement);
 
         } catch (XPathExpressionException e) {
             e.printStackTrace();
@@ -178,11 +177,11 @@ public class ModelGenerator {
     }
 
 
-
-
-    private Element getElementReplacing(Element original, HashMap<String,String> replacements, Document doc){
+    private void addElementReplacing(Element original, HashMap<String,String> replacements, Element rootElement){
 
         XPath xpath = XPathFactory.newInstance().newXPath();
+        Element importedElement =  (Element) outputDoc.importNode(original,true);
+        rootElement.appendChild(importedElement);
 
         Iterator test =  replacements.keySet().iterator();
         while (test.hasNext()) {
@@ -192,19 +191,17 @@ public class ModelGenerator {
             String agentExpr = String.format("//@*[.=\"%s\"]",next);
 
             try {
-                Attr attribute = (Attr) xpath.evaluate(agentExpr,original,XPathConstants.NODE);
+                Attr attribute = (Attr) xpath.evaluate(agentExpr,importedElement,XPathConstants.NODE);
 
                 attribute.setValue(replacements.get(next));
+
 
 
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
             }
         }
-        Element importedElement = (Element) doc.importNode(original,true);
-        return  importedElement;
     }
-
 
     class AgentProperties{
         int size;
