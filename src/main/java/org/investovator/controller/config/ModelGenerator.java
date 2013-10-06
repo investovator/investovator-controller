@@ -13,9 +13,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
-import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -98,7 +96,7 @@ public class ModelGenerator {
         outputDoc.appendChild(rootElement);
 
 
-        //addGlobalDependencies(doc,rootElement);
+        addGlobalDependencies(rootElement);
 
         addAgents(rootElement);
 
@@ -128,16 +126,50 @@ public class ModelGenerator {
         NodeList nodesAttr = null;
         try {
             nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODESET);
+            HashMap<String,String> replacements = new HashMap<String, String>();
 
             for (int i = 0; i < nodesAttr.getLength(); i++) {
-                rootElement.appendChild( outputDoc.importNode(nodesAttr.item(i),true) );
+
+                Node result = outputDoc.importNode(nodesAttr.item(i), true);
+                rootElement.appendChild( result );
+
+                replacePlaceHolder(result, "$stockID","GOOG");
+
             }
-
-
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         }
     }
+
+
+
+    private void replacePlaceHolder(Node source, String placeholder, String replacement){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = "//@*";
+
+        NodeList nodesAttr = null;
+        try {
+            nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, source, XPathConstants.NODESET);
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+        String resultAtt ;
+
+        for(int i=0; i<nodesAttr.getLength(); i++) {
+            resultAtt = nodesAttr.item(i).getTextContent();
+
+            if(resultAtt.contains(placeholder)){
+                resultAtt = resultAtt.replace("$stockID",replacement);
+                nodesAttr.item(i).setTextContent(resultAtt);
+            }
+        }
+
+    }
+
+
 
 
     private void createXML(){
@@ -168,7 +200,7 @@ public class ModelGenerator {
             HashMap<String,String> replacements = new HashMap<String, String>();
             replacements.put("$population_size",Integer.toString(size));
 
-            addElementReplacing(agentBean, replacements,rootElement);
+            addElementReplacingAttributes(agentBean, replacements, rootElement);
 
         } catch (XPathExpressionException e) {
             e.printStackTrace();
@@ -176,17 +208,21 @@ public class ModelGenerator {
 
     }
 
-
-    private void addElementReplacing(Element original, HashMap<String,String> replacements, Element rootElement){
+    /**
+     * Add Elements to document replacing attributes which has variable value given in replacements keys and replaces with its value.
+     * @param original
+     * @param replacements
+     * @param parent
+     */
+    private void addElementReplacingAttributes(Element original, HashMap<String, String> replacements, Element parent){
 
         XPath xpath = XPathFactory.newInstance().newXPath();
         Element importedElement =  (Element) outputDoc.importNode(original,true);
-        rootElement.appendChild(importedElement);
+        parent.appendChild(importedElement);
 
         Iterator test =  replacements.keySet().iterator();
         while (test.hasNext()) {
             String next = test.next().toString();
-
 
             String agentExpr = String.format("//@*[.=\"%s\"]",next);
 
@@ -202,6 +238,9 @@ public class ModelGenerator {
             }
         }
     }
+
+
+
 
     class AgentProperties{
         int size;
