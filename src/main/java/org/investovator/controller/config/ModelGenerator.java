@@ -1,9 +1,6 @@
 package org.investovator.controller.config;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,6 +16,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @author Amila Surendra
@@ -80,10 +79,18 @@ public class ModelGenerator {
         doc.appendChild(rootElement);
 
 
-        addGlobalDependencies(doc,rootElement);
+        //addGlobalDependencies(doc,rootElement);
 
+        addAgents(rootElement, doc);
 
         createXML(doc);
+
+    }
+
+
+    public void addAgents(Element rootElement, Document doc){
+
+        addAgent(getSupportedAgentTypes()[0],100,rootElement,doc);
 
     }
 
@@ -121,6 +128,63 @@ public class ModelGenerator {
         } catch (TransformerException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+    }
+
+
+    private void addAgent(String agent, int size ,Element rootElement, Document doc) {
+
+
+            XPath xpath = XPathFactory.newInstance().newXPath();
+
+            String agentExpr = String.format("//agents//agent[@name=\"%s\"]/agent-bean/*", agent);
+
+
+
+        try {
+            Element agentBean = (Element) xpath.evaluate(agentExpr, templateDoc, XPathConstants.NODE);
+
+            HashMap<String,String> replacements = new HashMap<String, String>();
+            replacements.put("$population_size","100");
+
+            rootElement.appendChild(getElementReplacing(agentBean, replacements,doc));
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+
+    }
+
+
+
+
+    private Element getElementReplacing(Element original, HashMap<String,String> replacements, Document doc){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        Iterator test =  replacements.keySet().iterator();
+        while (test.hasNext()) {
+            String next = test.next().toString();
+
+
+            String agentExpr = String.format("//@*[.=\"%s\"]",next);
+
+            try {
+                Attr attribute = (Attr) xpath.evaluate(agentExpr,original,XPathConstants.NODE);
+
+                attribute.setValue(replacements.get(next));
+
+
+            } catch (XPathExpressionException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+        Element importedElement = (Element) doc.importNode(original,true);
+        return  importedElement;
     }
 
 }

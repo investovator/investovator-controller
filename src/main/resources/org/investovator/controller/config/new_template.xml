@@ -45,7 +45,7 @@
                 <bean id="linearCombinationTraders"
                       scope="simulation" class="net.sourceforge.jabm.agent.AgentList"
                       init-method="populateFromFactory">
-                    <property name="size" value="160"/>
+                    <property name="size" value="$population_size"/>
                     <property name="agentFactory" ref="linearCombinationTraderFactory"/>
                 </bean>
             </agent-bean>
@@ -58,7 +58,7 @@
                 <bean id="noiseTraders"
                       scope="simulation" class="net.sourceforge.jabm.agent.AgentList"
                       init-method="populateFromFactory">
-                    <property name="size" value="15"/>
+                    <property name="size" value="$population_size"/>
                     <property name="agentFactory" ref="noiseTraderFactory"/>
                 </bean>
             </agent-bean>
@@ -69,7 +69,7 @@
                 <bean id="fundamentalistTraders"
                       scope="simulation" class="net.sourceforge.jabm.agent.AgentList"
                       init-method="populateFromFactory">
-                    <property name="size" value="15"/>
+                    <property name="size" value="$population_size"/>
                     <property name="agentFactory" ref="fundamentalistFactory"/>
                 </bean>
             </agent-bean>
@@ -80,7 +80,7 @@
                 <bean id="chartistTraders"
                       scope="simulation" class="net.sourceforge.jabm.agent.AgentList"
                       init-method="populateFromFactory">
-                    <property name="size" value="10"/>
+                    <property name="size" value="$population_size"/>
                     <property name="agentFactory" ref="chartistFactory"/>
                 </bean>
             </agent-bean>
