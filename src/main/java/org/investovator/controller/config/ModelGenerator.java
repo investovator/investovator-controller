@@ -27,7 +27,8 @@ public class ModelGenerator {
     Document templateDoc;
     Document outputDoc;
 
-    String stockID = "GOOG";
+    private String stockID;
+    private String outputFile;
 
     /*Variables for storing external properties*/
     private HashMap<String,AgentProperties> agentProperties;
@@ -35,7 +36,8 @@ public class ModelGenerator {
     private HashMap<String,String> simulationProperties;
 
 
-    public ModelGenerator(String templateFile){
+    public ModelGenerator(){
+        String templateFile = getClass().getResource("model_template.xml").getPath();
         parser = new XMLParser(templateFile);
         templateDoc = parser.getXMLDocumentModel();
 
@@ -44,6 +46,16 @@ public class ModelGenerator {
         reports = new ArrayList<String>();
         simulationProperties = new HashMap<String, String>();
     }
+
+
+    public void setStockID(String stockID){
+        this.stockID = stockID;
+    }
+
+    public void setOutputFile(String outputFile){
+        this.outputFile = outputFile;
+    }
+
 
     /**
      * Returns the Types of Agents supported by the System
@@ -114,13 +126,10 @@ public class ModelGenerator {
         outputDoc.appendChild(rootElement);
 
 
-        //addGlobalDependencies(rootElement);
-
-        //addAgents(rootElement);
-
-        //addController(rootElement,null); //Currently doesn't use replacements
-
+        addController(rootElement,null); //Currently doesn't use replacements
         addSimulation(rootElement, simulationProperties);
+        addAgents(rootElement);
+        addGlobalDependencies(rootElement);
 
         createXML();
 
@@ -279,7 +288,7 @@ public class ModelGenerator {
         try {
             transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(outputDoc);
-            StreamResult result = new StreamResult(new File("out.xml"));
+            StreamResult result = new StreamResult(new File(outputFile));
             transformer.transform(source, result);
 
         } catch (TransformerConfigurationException e) {
