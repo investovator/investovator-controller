@@ -58,7 +58,7 @@ public class ReportGenerator {
 
     public String[] getDependencyReportBeans(String reportType){
 
-        String[] beannames;
+        String[] beanNames;
 
         XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -72,13 +72,13 @@ public class ReportGenerator {
             e.printStackTrace();
         }
 
-        beannames = new String[nodesAttr.getLength()];
+        beanNames = new String[nodesAttr.getLength()];
 
-        for(int i=0; i<beannames.length; i++) {
-            beannames[i] = nodesAttr.item(i).getTextContent();
+        for(int i=0; i<beanNames.length; i++) {
+            beanNames[i] = nodesAttr.item(i).getTextContent();
         }
 
-        return beannames;
+        return beanNames;
     }
 
 
