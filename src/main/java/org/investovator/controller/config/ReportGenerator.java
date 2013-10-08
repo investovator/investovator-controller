@@ -23,7 +23,8 @@ public class ReportGenerator {
     String fileToBeSaved = "out.xml";
     Document outputDoc;
 
-    public ReportGenerator(String templateFile){
+    public ReportGenerator(){
+        String templateFile = getClass().getResource("report_template.xml").getPath();
         parser = new XMLParser(templateFile);
         this.templateDoc = parser.getXMLDocumentModel();
 
@@ -132,7 +133,7 @@ public class ReportGenerator {
         try {
             transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(outputDoc);
-            StreamResult result = new StreamResult(new File("out.xml"));
+            StreamResult result = new StreamResult(new File(fileToBeSaved));
             transformer.transform(source, result);
 
         } catch (TransformerConfigurationException e) {
