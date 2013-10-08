@@ -4,6 +4,7 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
@@ -20,10 +21,12 @@ public class ReportGenerator {
     Document templateDoc;
     XMLParser parser;
     String fileToBeSaved = "out.xml";
+    Document outputDoc;
 
     public ReportGenerator(String templateFile){
         parser = new XMLParser(templateFile);
         this.templateDoc = parser.getXMLDocumentModel();
+
     }
 
 
@@ -82,55 +85,61 @@ public class ReportGenerator {
     }
 
 
-    public File generateXML(String stockID){
-
-        String filePath = getClass().getResource("report_template.xml").getPath();
-
+    public void generateXML(String stockID){
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;
         try {
+
             docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(filePath);
+
+            outputDoc = docBuilder.newDocument();
+            Element rootElement = outputDoc.createElement("beans");
+            outputDoc.appendChild(rootElement);
 
             XPath xpath = XPathFactory.newInstance().newXPath();
 
 
             // change ATTRIBUTES
-            String xPathExpressionAttr = "//@id|//@ref|//@bean";
-            NodeList nodesAttr = (NodeList) xpath.evaluate(xPathExpressionAttr, doc, XPathConstants.NODESET);
+            String xPathExpressionElements = "/investovator-config//dependencies/*";
+            NodeList beanElements = (NodeList) xpath.evaluate(xPathExpressionElements, templateDoc, XPathConstants.NODESET);
 
-            String resultAtt ;
+            HashMap<String,String> replacements = new HashMap<String, String>();
+            replacements.put("$stockID",stockID);
 
-            for(int i=0; i<nodesAttr.getLength(); i++) {
-                resultAtt = nodesAttr.item(i).getTextContent();
-                resultAtt = resultAtt + stockID;
-                nodesAttr.item(i).setTextContent(resultAtt);
+            for (int i = 0; i < beanElements.getLength(); i++) {
+
+                Element importedElement =  (Element)  outputDoc.importNode((Element)beanElements.item(i),true);
+                rootElement.appendChild(importedElement);
+
+                XMLEditor.replacePlaceHolder(importedElement,"$stock", stockID);
+
             }
-
             // save xml file back
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(fileToBeSaved));
-            transformer.transform(source, result);
+            createXML();
 
-
+        } catch (XPathExpressionException e) {
+              e.printStackTrace();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+    }
+
+
+    private void createXML(){
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(outputDoc);
+            StreamResult result = new StreamResult(new File("out.xml"));
+            transformer.transform(source, result);
+
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         } catch (TransformerException e) {
             e.printStackTrace();
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
         }
-
-        return null;
     }
 
 }

@@ -10,7 +10,7 @@ public class ReportGeneratorTest {
     @Test
     public void testGenerateXML() throws Exception {
 
-        ReportGenerator gen = new ReportGenerator(null);
+        ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
 
         gen.generateXML("IBM");
 
