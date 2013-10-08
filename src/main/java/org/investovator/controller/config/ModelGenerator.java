@@ -30,9 +30,9 @@ public class ModelGenerator {
     String stockID = "GOOG";
 
     /*Variables for storing external properties*/
-    HashMap<String,AgentProperties> agentProperties;
-
-    ArrayList<String> reports;
+    private HashMap<String,AgentProperties> agentProperties;
+    private ArrayList<String> reports;
+    private HashMap<String,String> simulationProperties;
 
 
     public ModelGenerator(String templateFile){
@@ -42,6 +42,7 @@ public class ModelGenerator {
         /*Initialization*/
         agentProperties = new HashMap<String, AgentProperties>();
         reports = new ArrayList<String>();
+        simulationProperties = new HashMap<String, String>();
     }
 
     /**
@@ -90,6 +91,11 @@ public class ModelGenerator {
         }
     }
 
+    public void addSimulationProperty(String propertyName, String value){
+        simulationProperties.put(propertyName,value);
+    }
+
+
 
     public void createModelConfig(){
 
@@ -112,7 +118,9 @@ public class ModelGenerator {
 
         //addAgents(rootElement);
 
-        addController(rootElement,null); //Currently doesn't use replacements
+        //addController(rootElement,null); //Currently doesn't use replacements
+
+        addSimulation(rootElement, simulationProperties);
 
         createXML();
 
@@ -153,6 +161,30 @@ public class ModelGenerator {
             e.printStackTrace();
         }
     }
+
+
+
+    private void addSimulation(Element parent , HashMap<String,String> replacements){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = "/investovator-config/simulation/*";
+
+        Element controllerElement = null;
+        try {
+            controllerElement = (Element) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODE);
+
+            addElementReplacingAttributes(controllerElement,simulationProperties, parent);
+
+
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
 
@@ -288,6 +320,7 @@ public class ModelGenerator {
         XPath xpath = XPathFactory.newInstance().newXPath();
         Element importedElement =  (Element) outputDoc.importNode(original,true);
         parent.appendChild(importedElement);
+        replacePlaceHolder(importedElement, "$stockID", stockID);
 
         Iterator test =  replacements.keySet().iterator();
         while (test.hasNext()) {

@@ -14,7 +14,7 @@ public class ModelGeneratorTest {
 
     @Before
     public void setUp() throws Exception {
-        generator = new ModelGenerator(ModelGenerator.class.getResource("new_template.xml").getPath());
+        generator = new ModelGenerator(ModelGenerator.class.getResource("model_template.xml").getPath());
 
     }
 
@@ -39,6 +39,13 @@ public class ModelGeneratorTest {
         String[] result = gen.getDependencyReportBeans(types[0]);
 
         generator.addDependencyReportBean(result);
+
+        generator.addSimulationProperty("$slowSleepInterval","100");
+        generator.addSimulationProperty("$maximumDays","1");
+        generator.addSimulationProperty("$lengthOfDay","200000");
+        generator.addSimulationProperty("$initialPrice","500");
+
+
 
         generator.createModelConfig();
 
