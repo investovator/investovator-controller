@@ -32,15 +32,15 @@
         <bean id="$stockID" class="net.sourceforge.jasa.market.MarketSimulation"
               scope="singleton">
             <property name="simulationController" ref="$stockIDController"/>
-            <property name="maximumDays" value="1"/>
-            <property name="lengthOfDay" value="200000"/>
+            <property name="maximumDays" value="$maximumDays"/>
+            <property name="lengthOfDay" value="$lengthOfDay"/>
             <property name="population" ref="staticPopulation$stockID"/>
             <property name="agentMixer" ref="randomArrivalAgentMixer$stockID"/>
             <property name="agentInitialiser" ref="agentInitialiserProxy$stockID"/>
             <property name="auctioneer" ref="cda$stockID"/>
-            <property name="initialPrice" value="1"/>
+            <property name="initialPrice" value="$initialPrice"/>
             <property name="stockID" value="$stockID" />
-            <property name="slowSleepInterval" value="100" />
+            <property name="slowSleepInterval" value="$slowSleepInterval" />
         </bean>
     </simulation>
 

@@ -6,14 +6,13 @@
         <report name="Price Time Series">
             <bean-name>gbmPriceProcess$stockID</bean-name>
             <bean-name>gbmPriceTimeSeriesReport$stockID</bean-name>
-
+            <bean-name>priceTimeSeriesChart$stockID</bean-name>
         </report>
     </reports>
 
+    <!--This is not yet implemented-->
     <essential-reports>
-        <report>
-            <bean-name>priceTimeSeriesChart$stockID</bean-name>
-        </report>
+
     </essential-reports>
 
     <dependencies>
