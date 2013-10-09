@@ -23,8 +23,7 @@ public class ReportGenerator {
     String fileToBeSaved = "out.xml";
     Document outputDoc;
 
-    public ReportGenerator(){
-        String templateFile = getClass().getResource("report_template.xml").getPath();
+    public ReportGenerator(String templateFile){
         parser = new XMLParser(templateFile);
         this.templateDoc = parser.getXMLDocumentModel();
 

@@ -21,6 +21,21 @@ public class ConfigGenerator {
     private HashMap<String,Integer> agentPopulation = new HashMap<String, Integer>();
     String[] dependencyReports;
 
+    private String modelTemlpateFile;
+    private String reportTemlpateFile;
+    private String mainTemplateFile;
+
+    public void setModelTemlpateFile(String filePath){
+        this.modelTemlpateFile = filePath;
+    }
+
+    public void setReportTemlpateFile(String reportTemlpateFile) {
+        this.reportTemlpateFile = reportTemlpateFile;
+    }
+
+    public void setMainTemplateFile(String mainTemplateFile) {
+        this.mainTemplateFile = mainTemplateFile;
+    }
 
     public ConfigGenerator(String[] stockIDs, String outputPath){
         this.stockIDs = stockIDs;
@@ -74,15 +89,15 @@ public class ConfigGenerator {
     }
 
     public String[] getSupportedAgentTypes(){
-        return  new ModelGenerator().getSupportedAgentTypes();
+        return  new ModelGenerator(modelTemlpateFile).getSupportedAgentTypes();
     }
 
     public String[] getSupportedReports(){
-        return new ReportGenerator().getSupportedReports();
+        return new ReportGenerator(reportTemlpateFile).getSupportedReports();
     }
 
     public String[] getDependencyReportBeans(String reportType){
-        return  new ReportGenerator().getDependencyReportBeans(reportType);
+        return  new ReportGenerator(reportTemlpateFile).getDependencyReportBeans(reportType);
     }
 
     public void addAgent(String agent, int populationSize){
@@ -94,14 +109,14 @@ public class ConfigGenerator {
 
         //Create Report File
         String reportFile = String.format("%s/report_%s.xml",outputPath,stockID);
-        ReportGenerator reportFileGenerator = new ReportGenerator();
+        ReportGenerator reportFileGenerator = new ReportGenerator(reportTemlpateFile);
         reportFileGenerator.setOutputPath(reportFile);
         reportFileGenerator.generateXML(stockID);
 
 
         //Create Model File
         String modelFile = String.format("%s/model_%s.xml",outputPath,stockID);
-        ModelGenerator modelFileGenerator = new ModelGenerator();
+        ModelGenerator modelFileGenerator = new ModelGenerator(modelTemlpateFile);
         modelFileGenerator.setStockID(stockID);
         modelFileGenerator.setOutputFile(modelFile);
 

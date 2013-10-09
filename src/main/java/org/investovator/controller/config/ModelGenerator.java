@@ -36,8 +36,7 @@ public class ModelGenerator {
     private HashMap<String,String> simulationProperties;
 
 
-    public ModelGenerator(){
-        String templateFile = getClass().getResource("model_template.xml").getPath();
+    public ModelGenerator(String templateFile){
         parser = new XMLParser(templateFile);
         templateDoc = parser.getXMLDocumentModel();
 
