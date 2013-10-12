@@ -68,7 +68,7 @@ public class XMLParser {
 
             transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(inputFile));
+            StreamResult result = new StreamResult(new File(fileName));
             transformer.transform(source, result);
 
         } catch (TransformerConfigurationException e) {
