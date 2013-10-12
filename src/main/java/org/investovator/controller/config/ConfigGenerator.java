@@ -1,5 +1,31 @@
+/*
+ * investovator, Stock Market Gaming framework
+ * Copyright (C) 2013  investovator
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.investovator.controller.config;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,7 +34,7 @@ import java.util.Iterator;
  * @author Amila Surendra
  * @version $Revision
  *
- * THis is the main Agent configuration class called by UI.
+ * This is the main Agent configuration class called by UI.
  */
 public class ConfigGenerator {
 
@@ -24,6 +50,7 @@ public class ConfigGenerator {
     private String modelTemlpateFile;
     private String reportTemlpateFile;
     private String mainTemplateFile;
+
 
     public void setModelTemlpateFile(String filePath){
         this.modelTemlpateFile = filePath;
@@ -138,8 +165,34 @@ public class ConfigGenerator {
 
         modelFileGenerator.createModelConfig();
 
+
+
+        //Create Main File
+        String mainFile = String.format("%s/main.xml",outputPath,stockID);
+        createMainXML(mainFile);
+
     }
 
+
+    private void createMainXML(String mainFile){
+
+        XMLParser templateParser = new XMLParser(mainTemplateFile);
+
+        //Controller and Simulation bean Names Are HardCoded for Now
+        Document mainXmlDoc = templateParser.getXMLDocumentModel();
+
+        Element tmpElement = XMLEditor.createImportElement(mainXmlDoc,"model_goog.xml");
+        Element tmpElement2 = XMLEditor.createImportElement(mainXmlDoc,"model_ibm.xml");
+        Element[] elements = new Element[2];
+        elements[0] = tmpElement;
+        elements[1] = tmpElement2;
+
+
+        XMLEditor.replacePlaceholderElement("file-imports", mainXmlDoc, elements);
+
+        templateParser.saveNewXML(mainFile);
+
+    }
 
 
 
