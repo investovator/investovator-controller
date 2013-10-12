@@ -20,7 +20,7 @@ public class ReportGenerator {
 
     Document templateDoc;
     XMLParser parser;
-    String fileToBeSaved = "out.xml";
+    String fileToBeSaved;
     Document outputDoc;
 
     public ReportGenerator(String templateFile){

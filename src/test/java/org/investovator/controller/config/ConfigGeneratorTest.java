@@ -15,6 +15,10 @@ public class ConfigGeneratorTest {
     @Before
     public void setUp() throws Exception {
         generator = new ConfigGenerator(stocks, System.getProperty("user.home") + "/config");
+
+        generator.setModelTemlpateFile(getClass().getResource("model_template.xml").getPath());
+        generator.setReportTemlpateFile(getClass().getResource("report_template.xml").getPath());
+        generator.setMainTemplateFile(getClass().getResource("main_template.xml").getPath());
     }
 
     @Test

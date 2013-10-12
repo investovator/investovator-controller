@@ -14,7 +14,7 @@ public class ModelGeneratorTest {
 
     @Before
     public void setUp() throws Exception {
-        generator = new ModelGenerator();
+        generator = new ModelGenerator(getClass().getResource("model_template.xml").getPath());
 
     }
 
@@ -34,7 +34,7 @@ public class ModelGeneratorTest {
         generator.addAgent(generator.getSupportedAgentTypes()[0],120);
         generator.addAgent(generator.getSupportedAgentTypes()[1],100);
 
-        ReportGenerator gen = new ReportGenerator();
+        ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
         String[] types = gen.getSupportedReports();
         String[] result = gen.getDependencyReportBeans(types[0]);
 

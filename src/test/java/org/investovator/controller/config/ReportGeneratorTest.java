@@ -10,7 +10,7 @@ public class ReportGeneratorTest {
     @Test
     public void testGenerateXML() throws Exception {
 
-        ReportGenerator gen = new ReportGenerator();
+        ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
 
         gen.generateXML("IBM");
 
@@ -20,7 +20,7 @@ public class ReportGeneratorTest {
     @Test
     public void testGetSupportedReports() throws Exception{
 
-        ReportGenerator gen = new ReportGenerator();
+        ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
 
         String[] result = gen.getSupportedReports();
 
@@ -33,7 +33,7 @@ public class ReportGeneratorTest {
     @Test
     public void testGetDependencyReportBeans() throws Exception{
 
-        ReportGenerator gen = new ReportGenerator();
+        ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
 
         String[] types = gen.getSupportedReports();
 
