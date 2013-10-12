@@ -78,4 +78,37 @@ public class XMLEditor {
 
     }
 
+
+    public static void replacePlaceholderElement(String placeholderName, Document doc, Element[] replacements){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+                                   String xPathExpressionAttr = "//" + placeholderName;
+
+        try {
+            Node reportListElement = (Node) xpath.evaluate(xPathExpressionAttr, doc, XPathConstants.NODE);
+
+            Element parent = (Element) reportListElement.getParentNode();
+
+            for (Element element : replacements) {
+                parent.appendChild(element);
+            }
+
+            parent.removeChild(reportListElement);
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Element createImportElement(Document sourceDoc, String fileName){
+
+        Element importElement = sourceDoc.createElement("import");
+        NamedNodeMap attribs = importElement.getAttributes();
+        Attr bean = sourceDoc.createAttribute("resource");
+        bean.setValue(fileName);
+        attribs.setNamedItem(bean);
+        return importElement;
+    }
+
 }
