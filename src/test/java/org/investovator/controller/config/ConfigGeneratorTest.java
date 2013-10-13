@@ -19,6 +19,7 @@ public class ConfigGeneratorTest {
         generator.setModelTemlpateFile(getClass().getResource("model_template.xml").getPath());
         generator.setReportTemlpateFile(getClass().getResource("report_template.xml").getPath());
         generator.setMainTemplateFile(getClass().getResource("main_template.xml").getPath());
+        generator.setSpringBeanConfigTemplate(getClass().getResource("bean-config-template.xml").getPath());
     }
 
     @Test

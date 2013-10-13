@@ -51,12 +51,16 @@ public class ConfigGenerator {
     private String modelTemlpateFile;
     private String reportTemlpateFile;
     private String mainTemplateFile;
-
+    private String springBeanConfigTemplate;
 
     //Main Template
     ArrayList<String> listOfImports;
     ArrayList<String> listOfControllers;
 
+
+    public void setSpringBeanConfigTemplate(String springBeanConfigTemplate) {
+        this.springBeanConfigTemplate = springBeanConfigTemplate;
+    }
 
     public void setModelTemlpateFile(String filePath){
         this.modelTemlpateFile = filePath;
@@ -156,6 +160,7 @@ public class ConfigGenerator {
         String reportFile = String.format("%s/%s",outputPath,reportFileName);
         ReportGenerator reportFileGenerator = new ReportGenerator(reportTemlpateFile);
         reportFileGenerator.setOutputPath(reportFile);
+        reportFileGenerator.setOutputTemplateDoc(springBeanConfigTemplate);
         reportFileGenerator.generateXML(stockID);
 
 
@@ -164,6 +169,7 @@ public class ConfigGenerator {
         ModelGenerator modelFileGenerator = new ModelGenerator(modelTemlpateFile);
         modelFileGenerator.setStockID(stockID);
         modelFileGenerator.setOutputFile(modelFile);
+        modelFileGenerator.setOutputTemplateDoc(springBeanConfigTemplate);
 
         Iterator agentPopulationIterator = agentPopulation.keySet().iterator();
 

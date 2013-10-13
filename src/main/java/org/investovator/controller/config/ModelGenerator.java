@@ -25,6 +25,12 @@ public class ModelGenerator {
 
     XMLParser parser;
     Document templateDoc;
+
+    public void setOutputTemplateDoc(String outputTemplateDoc) {
+        this.outputTemplateDoc = outputTemplateDoc;
+    }
+
+    String outputTemplateDoc;
     Document outputDoc;
 
     private String stockID;
@@ -120,9 +126,9 @@ public class ModelGenerator {
         }
 
         // root elements
-        outputDoc = docBuilder.newDocument();
-        Element rootElement = outputDoc.createElement("beans");
-        outputDoc.appendChild(rootElement);
+        XMLParser outputParser = new XMLParser(outputTemplateDoc);
+        outputDoc = outputParser.getXMLDocumentModel();
+        Element rootElement = outputDoc.getDocumentElement();
 
 
         addController(rootElement,null); //Currently doesn't use replacements

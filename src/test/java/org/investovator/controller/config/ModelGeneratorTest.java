@@ -17,6 +17,7 @@ public class ModelGeneratorTest {
         generator = new ModelGenerator(getClass().getResource("model_template.xml").getPath());
         generator.setStockID("GOOG");
         generator.setOutputFile("out.xml");
+        generator.setOutputTemplateDoc(getClass().getResource("bean-config-template.xml").getPath());
 
     }
 
