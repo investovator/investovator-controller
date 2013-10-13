@@ -271,7 +271,7 @@ public class ModelGenerator {
             resultAtt = nodesAttr.item(i).getTextContent();
 
             if(resultAtt.contains(placeholder)){
-                resultAtt = resultAtt.replace("$stockID",replacement);
+                resultAtt = resultAtt.replace(placeholder,replacement);
                 nodesAttr.item(i).setTextContent(resultAtt);
             }
         }

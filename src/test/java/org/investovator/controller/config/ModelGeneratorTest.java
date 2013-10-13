@@ -15,6 +15,8 @@ public class ModelGeneratorTest {
     @Before
     public void setUp() throws Exception {
         generator = new ModelGenerator(getClass().getResource("model_template.xml").getPath());
+        generator.setStockID("GOOG");
+        generator.setOutputFile("out.xml");
 
     }
 
@@ -44,8 +46,6 @@ public class ModelGeneratorTest {
         generator.addSimulationProperty("$maximumDays","1");
         generator.addSimulationProperty("$lengthOfDay","200000");
         generator.addSimulationProperty("$initialPrice","500");
-
-
 
         generator.createModelConfig();
 
