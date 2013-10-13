@@ -27,6 +27,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -52,6 +53,11 @@ public class ConfigGenerator {
     private String mainTemplateFile;
 
 
+    //Main Template
+    ArrayList<String> listOfImports;
+    ArrayList<String> listOfControllers;
+
+
     public void setModelTemlpateFile(String filePath){
         this.modelTemlpateFile = filePath;
     }
@@ -67,6 +73,11 @@ public class ConfigGenerator {
     public ConfigGenerator(String[] stockIDs, String outputPath){
         this.stockIDs = stockIDs;
         this.outputPath = outputPath;
+
+        listOfControllers = new ArrayList<String>();
+        listOfImports = new ArrayList<String>();
+
+
         initialize();
     }
 
@@ -74,6 +85,10 @@ public class ConfigGenerator {
         for (String stockID : stockIDs) {
             createConfig(stockID);
         }
+
+        //Create Main File
+        String mainFile = String.format("%s/main.xml",outputPath);
+        createMainXML(mainFile);
     }
 
     private void initialize(){
@@ -134,15 +149,18 @@ public class ConfigGenerator {
 
     private void createConfig(String stockID){
 
+        String reportFileName =  String.format("report_%s.xml",stockID);
+        String modelFileName =  String.format("model_%s.xml",stockID);
+
         //Create Report File
-        String reportFile = String.format("%s/report_%s.xml",outputPath,stockID);
+        String reportFile = String.format("%s/%s",outputPath,reportFileName);
         ReportGenerator reportFileGenerator = new ReportGenerator(reportTemlpateFile);
         reportFileGenerator.setOutputPath(reportFile);
         reportFileGenerator.generateXML(stockID);
 
 
         //Create Model File
-        String modelFile = String.format("%s/model_%s.xml",outputPath,stockID);
+        String modelFile = String.format("%s/%s",outputPath,modelFileName);
         ModelGenerator modelFileGenerator = new ModelGenerator(modelTemlpateFile);
         modelFileGenerator.setStockID(stockID);
         modelFileGenerator.setOutputFile(modelFile);
@@ -166,29 +184,49 @@ public class ConfigGenerator {
         modelFileGenerator.createModelConfig();
 
 
+        listOfImports.add(reportFileName);
+        listOfImports.add(modelFileName);
 
-        //Create Main File
-        String mainFile = String.format("%s/main.xml",outputPath,stockID);
-        createMainXML(mainFile);
 
+        //Controller bean names are hard coded for now
+        listOfControllers.add(stockID+"Controller");
     }
+
+
+
 
 
     private void createMainXML(String mainFile){
 
         XMLParser templateParser = new XMLParser(mainTemplateFile);
-
-        //Controller and Simulation bean Names Are HardCoded for Now
         Document mainXmlDoc = templateParser.getXMLDocumentModel();
 
-        Element tmpElement = XMLEditor.createImportElement(mainXmlDoc,"model_goog.xml");
-        Element tmpElement2 = XMLEditor.createImportElement(mainXmlDoc,"model_ibm.xml");
-        Element[] elements = new Element[2];
-        elements[0] = tmpElement;
-        elements[1] = tmpElement2;
-
-
+        //Adding imports
+        Element[] elements = new Element[listOfImports.size()];
+        for (int i = 0; i < listOfImports.size(); i++) {
+            elements[i] =   XMLEditor.createImportElement(mainXmlDoc,listOfImports.get(i));
+        }
         XMLEditor.replacePlaceholderElement("file-imports", mainXmlDoc, elements);
+
+
+
+        //Adding controllers
+        int controllersCount =  listOfControllers.size();
+        elements = new Element[controllersCount];
+        for (int i = 0; i < controllersCount; i++) {
+            elements[i] =   XMLEditor.createControllerElement(mainXmlDoc,listOfControllers.get(i));
+        }
+        XMLEditor.replacePlaceholderElement("controllers", mainXmlDoc, elements);
+
+
+        //Adding Stocks
+        //Adding controllers
+        int stocksCount =  stockIDs.length;
+        elements = new Element[stocksCount];
+        for (int i = 0; i < stocksCount; i++) {
+            elements[i] =   XMLEditor.createControllerElement(mainXmlDoc,stockIDs[i]);
+        }
+        XMLEditor.replacePlaceholderElement("stocks", mainXmlDoc, elements);
 
         templateParser.saveNewXML(mainFile);
 

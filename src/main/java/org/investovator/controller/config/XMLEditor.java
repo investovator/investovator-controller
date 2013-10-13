@@ -111,4 +111,15 @@ public class XMLEditor {
         return importElement;
     }
 
+
+    public static Element createControllerElement(Document sourceDoc, String fileName){
+
+        Element importElement = sourceDoc.createElement("ref");
+        NamedNodeMap attribs = importElement.getAttributes();
+        Attr bean = sourceDoc.createAttribute("bean");
+        bean.setValue(fileName);
+        attribs.setNamedItem(bean);
+        return importElement;
+    }
+
 }

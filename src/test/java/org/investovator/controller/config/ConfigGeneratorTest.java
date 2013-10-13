@@ -8,7 +8,7 @@ import org.junit.Test;
  * @version $Revision
  */
 public class ConfigGeneratorTest {
-    String[] stocks = {"IBM"};
+    String[] stocks = {"IBM","GOOG"};
 
     ConfigGenerator generator;
 
