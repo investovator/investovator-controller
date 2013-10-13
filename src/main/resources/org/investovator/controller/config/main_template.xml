@@ -8,7 +8,7 @@
     <file-imports />
 
 
-    <bean id="simulationManager" class="org.investovator.multiasset.simulation.MultiAssetSimulationManager"
+    <bean id="simulationManager" class="org.investovator.jasa.multiasset.simulation.HeadlessMultiAssetSimulationManager"
           scope="singleton">
         <property name="simulations">
             <list>
@@ -31,4 +31,13 @@
           scope="singleton">
         <constructor-arg value="data/" />
     </bean>
+
+
+    <!--Hv to ask rajja whether this needed only one :(:)-->
+    <bean id="prng" class="cern.jet.random.engine.MersenneTwister64" scope="prototype">
+            <constructor-arg>
+                <bean class="java.util.Date"/>
+            </constructor-arg>
+    </bean>
+
 </beans>
