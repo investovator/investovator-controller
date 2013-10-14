@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Amila Surendra
@@ -131,8 +132,9 @@ public class ModelGenerator {
         Element rootElement = outputDoc.getDocumentElement();
 
 
-        addController(rootElement,null); //Currently doesn't use replacements
+        addController(rootElement, null); //Currently doesn't use replacements
         addSimulation(rootElement, simulationProperties);
+        addPopulation(rootElement);
         addAgents(rootElement);
         addGlobalDependencies(rootElement);
 
@@ -256,6 +258,43 @@ public class ModelGenerator {
 
     }
 
+    private void addPopulation(Element parent){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = "/investovator-config/population/*";
+
+        Element controllerElement = null;
+        try {
+            controllerElement = (Element) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODE);
+
+
+            Element result = (Element) outputDoc.importNode(controllerElement, true);
+            parent.appendChild( result );
+
+            //replaceReportsPlaceholder(result);
+            Element[] agents = new Element[agentProperties.size()];
+            Iterator<String> selectedAgent = agentProperties.keySet().iterator();
+
+            int count=0;
+
+            while (selectedAgent.hasNext()) {
+                String next = selectedAgent.next();
+                agents[count] = XMLEditor.createAgentElement(outputDoc ,getPopulationBeanName(next));
+                count++;
+            }
+
+            XMLEditor.replacePlaceholderElement("agent-list", result, agents );
+            replacePlaceHolder(result, "$stockID", stockID);
+
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 
     private void replacePlaceHolder(Node source, String placeholder, String replacement){
@@ -306,8 +345,8 @@ public class ModelGenerator {
 
     private void addAgent(String agent, int size ,Element rootElement) {
 
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            String agentExpr = String.format("//agents//agent[@name=\"%s\"]/agent-bean/*", agent);
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        String agentExpr = String.format("//agents//agent[@name=\"%s\"]/agent-bean/*", agent);
 
         try {
             Element agentBean = (Element) xpath.evaluate(agentExpr, templateDoc, XPathConstants.NODE);
@@ -322,6 +361,21 @@ public class ModelGenerator {
         }
 
     }
+
+
+    //Hardcoding for now
+    private String getPopulationBeanName(String populationType){
+
+        if(populationType.equals("Linear Combination Traders")) return "linearCombinationTraders$stockID";
+        if(populationType.equals("Noise Traders")) return "noiseTraders$stockID";
+        if(populationType.equals("Fundamentalist Traders")) return "fundamentalistTraders$stockID";
+        if(populationType.equals("Chartist Traders")) return "chartistTraders$stockID";
+
+        else return null;
+    }
+
+
+
 
     /**
      * Add Elements to document replacing attributes which has variable value given in replacements keys and replaces with its value.

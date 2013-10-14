@@ -27,6 +27,10 @@
     </bean>
 
 
+
+
+    <!--Define Beans here that should be one for simulation-->
+
     <bean id="fileNamePrefix" class="net.sourceforge.jabm.util.MutableStringWrapper"
           scope="singleton">
         <constructor-arg value="data/" />
@@ -38,6 +42,12 @@
             <constructor-arg>
                 <bean class="java.util.Date"/>
             </constructor-arg>
+    </bean>
+
+
+    <!-- Transaction prices are set to the price of the ask -->
+    <bean id="stockMarketTimePriorityPricingPolicy" scope="simulation"
+    class="net.sourceforge.jasa.market.rules.StockMarketTimePriorityPricingPolicy">
     </bean>
 
 </beans>
