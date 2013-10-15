@@ -13,6 +13,7 @@ public class ReportGeneratorTest {
         ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
 
         gen.setOutputPath("out.xml");
+        gen.setOutputTemplateDoc(getClass().getResource("bean-config-template.xml").getPath());
 
         gen.generateXML("IBM");
 

@@ -21,6 +21,7 @@ public class ReportGenerator {
     Document templateDoc;
     XMLParser parser;
     String fileToBeSaved;
+    String outputTemplateDoc;
     Document outputDoc;
 
     public ReportGenerator(String templateFile){
@@ -29,6 +30,9 @@ public class ReportGenerator {
 
     }
 
+    public void setOutputTemplateDoc(String outputTemplateDoc) {
+        this.outputTemplateDoc = outputTemplateDoc;
+    }
 
     public void setOutputPath(String path){
         fileToBeSaved = path;
@@ -93,9 +97,9 @@ public class ReportGenerator {
 
             docBuilder = docFactory.newDocumentBuilder();
 
-            outputDoc = docBuilder.newDocument();
-            Element rootElement = outputDoc.createElement("beans");
-            outputDoc.appendChild(rootElement);
+            XMLParser outputParser = new XMLParser(outputTemplateDoc);
+            outputDoc = outputParser.getXMLDocumentModel();
+            Element rootElement = outputDoc.getDocumentElement();
 
             XPath xpath = XPathFactory.newInstance().newXPath();
 
