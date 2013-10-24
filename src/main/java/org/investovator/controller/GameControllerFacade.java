@@ -2,6 +2,8 @@ package org.investovator.controller;
 
 
 import org.investovator.controller.agentgaming.AgentGameFacade;
+import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
 
 /**
@@ -11,6 +13,8 @@ import org.investovator.controller.utils.events.GameEventListener;
 public class GameControllerFacade {
 
     private AgentGameFacade agentGameFacade;
+    private static GameModes currentGameMode = null;
+    private static GameStates currentGameState = GameStates.NEW;
 
 
     private static GameControllerFacade instance;
@@ -35,5 +39,12 @@ public class GameControllerFacade {
         //agentGameFacade.registerListener(listener);
     }
 
+    public GameModes getCurrentGameMode(){
+        return currentGameMode;
+    }
+
+    public GameStates getCurrentGameState(){
+        return  currentGameState;
+    }
 
 }
