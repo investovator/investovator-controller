@@ -73,10 +73,10 @@ public class GameControllerFacade {
                 currentGameState=GameStates.RUNNING;
                 break;
             case NN_GAME:
-                currentGameMode=GameModes.PAYBACK_ENG;
-                currentGameState=GameStates.RUNNING;
                 break;
             case PAYBACK_ENG:
+                currentGameMode=GameModes.PAYBACK_ENG;
+                currentGameState=GameStates.RUNNING;
                 break;
         }
 
