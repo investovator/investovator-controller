@@ -65,6 +65,7 @@ public class GameControllerFacade {
 
         if(currentGameState==GameStates.RUNNING) throw new GameProgressingException();
 
+        //todo - Handle "Configured" state
         switch (gameMode) {
             case AGENT_GAME:
                 startAgentGame();
@@ -72,6 +73,8 @@ public class GameControllerFacade {
                 currentGameState=GameStates.RUNNING;
                 break;
             case NN_GAME:
+                currentGameMode=GameModes.PAYBACK_ENG;
+                currentGameState=GameStates.RUNNING;
                 break;
             case PAYBACK_ENG:
                 break;
