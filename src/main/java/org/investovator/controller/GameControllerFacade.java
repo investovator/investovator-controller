@@ -88,7 +88,7 @@ public class GameControllerFacade {
 
                     try {
                         Thread.sleep(1000);
-                        notifyListeners(new GameCreationProgressChanged(GameModes.AGENT_GAME, (i/5) ));
+                        notifyListeners(new GameCreationProgressChanged(GameModes.AGENT_GAME, (((float)i)/4) ));
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
