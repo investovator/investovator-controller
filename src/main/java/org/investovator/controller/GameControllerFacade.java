@@ -63,9 +63,13 @@ public class GameControllerFacade {
 
     public void startGame(GameModes gameMode, Object[] configutrations) throws GameProgressingException{
 
+        if(currentGameState==GameStates.RUNNING) throw new GameProgressingException();
+
         switch (gameMode) {
             case AGENT_GAME:
                 startAgentGame();
+                currentGameMode=GameModes.AGENT_GAME;
+                currentGameState=GameStates.RUNNING;
                 break;
             case NN_GAME:
                 break;
