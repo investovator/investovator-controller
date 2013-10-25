@@ -18,6 +18,8 @@
 
 package org.investovator.controller.config;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.investovator.core.configuration.ConfigLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -126,8 +128,31 @@ public class ConfigGenerator {
 
     public void setSpeedFactor(float speedRatio){
         //Should calculate and put
-        properties.put("$lengthOfDay",Integer.toString(200000));
-        properties.put("$slowSleepInterval",Integer.toString(100));
+
+        int lengthOfDay = 200000;
+        int delay = 1000;
+
+        String lengthProp;
+        String delayProp;
+
+        if( (lengthProp = System.getProperty("org.investovator.controller.agent.config.lengthofday")) != null){
+            lengthOfDay =  Integer.parseInt( lengthProp);
+        }
+
+        if( (delayProp = System.getProperty("org.investovator.controller.agent.config.delay")) != null){
+            delay =  Integer.parseInt( delayProp );
+        }
+
+        properties.put("$lengthOfDay",Integer.toString(lengthOfDay));
+        properties.put("$slowSleepInterval",Integer.toString((int)(delay/speedRatio)));
+    }
+
+    public void setProperties(String propertiesFile){
+        try {
+            ConfigLoader.loadProperties(propertiesFile);
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addDependencyReportBean(String[] beanNames){
