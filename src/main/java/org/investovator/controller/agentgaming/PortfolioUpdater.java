@@ -47,7 +47,11 @@ public class PortfolioUpdater implements EventListener {
     private ArrayList<GameEventListener> listeners;
 
     public PortfolioUpdater() {
-        userData = new UserDataImpl();
+        try {
+            userData = new UserDataImpl();
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
         jasaFacade = JASAFacade.getMarketFacade();
     }
 

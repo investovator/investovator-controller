@@ -34,7 +34,11 @@ public class AgentGameFacade {
     CompanyData companyData;
 
     public AgentGameFacade() {
-        companyData = new CompanyDataImpl();
+        try {
+            companyData = new CompanyDataImpl();
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setupAgentGame(){

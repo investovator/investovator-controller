@@ -19,7 +19,7 @@
 package org.investovator.controller.config;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.investovator.core.configuration.ConfigLoader;
+import org.investovator.core.commons.configuration.ConfigLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
