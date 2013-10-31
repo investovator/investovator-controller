@@ -22,7 +22,7 @@ import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.core.data.api.CompanyData;
 import org.investovator.core.data.api.CompanyDataImpl;
 import org.investovator.core.data.exeptions.DataAccessException;
-import org.investovator.jasa.api.JASAFacade;
+import org.investovator.agentsimulation.api.JASAFacade;
 
 /**
  * @author Amila Surendra

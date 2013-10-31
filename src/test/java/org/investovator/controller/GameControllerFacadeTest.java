@@ -4,8 +4,8 @@ import net.sourceforge.jasa.event.MarketEvent;
 import org.investovator.controller.utils.events.GameEvent;
 import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.controller.utils.events.PortfolioChangedEvent;
-import org.investovator.jasa.api.JASAFacade;
-import org.investovator.jasa.api.MarketFacade;
+import org.investovator.agentsimulation.api.JASAFacade;
+import org.investovator.agentsimulation.api.MarketFacade;
 import org.junit.Before;
 import org.junit.Test;
 

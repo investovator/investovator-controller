@@ -26,8 +26,8 @@ import org.investovator.controller.utils.events.GameCreationProgressChanged;
 import org.investovator.controller.utils.events.GameEvent;
 import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.controller.utils.exceptions.GameProgressingException;
-import org.investovator.jasa.api.JASAFacade;
-import org.investovator.jasa.api.MarketFacade;
+import org.investovator.agentsimulation.api.JASAFacade;
+import org.investovator.agentsimulation.api.MarketFacade;
 
 import java.util.ArrayList;
 

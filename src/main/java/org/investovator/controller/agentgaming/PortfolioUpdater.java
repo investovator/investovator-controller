@@ -30,9 +30,9 @@ import org.investovator.core.commons.utils.Portfolio;
 import org.investovator.core.data.api.UserData;
 import org.investovator.core.data.api.UserDataImpl;
 import org.investovator.core.data.exeptions.DataAccessException;
-import org.investovator.jasa.api.JASAFacade;
-import org.investovator.jasa.api.MarketFacade;
-import org.investovator.jasa.api.utils.HollowTradingAgent;
+import org.investovator.agentsimulation.api.JASAFacade;
+import org.investovator.agentsimulation.api.MarketFacade;
+import org.investovator.agentsimulation.api.utils.HollowTradingAgent;
 
 import java.util.ArrayList;
 
