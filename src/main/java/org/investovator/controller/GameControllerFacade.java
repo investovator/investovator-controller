@@ -82,6 +82,14 @@ public class GameControllerFacade {
 
     }
 
+    public void stopGame(GameModes gameMode){
+        switch (gameMode){
+            case PAYBACK_ENG:
+                currentGameMode=GameModes.PAYBACK_ENG;
+                currentGameState=GameStates.NEW;
+        }
+    }
+
 
     private void startAgentGame(){
 
