@@ -27,6 +27,22 @@ import org.investovator.dataplaybackengine.DataPlayerFacade;
  */
 public class DataPlaybackGameFacade {
 
+    private static DataPlaybackGameFacade facade;
+
+    private DataPlaybackGameFacade(){
+
+    }
+
+    public static synchronized DataPlaybackGameFacade getInstance(){
+        if(facade==null){
+            facade=new DataPlaybackGameFacade();
+        }
+
+        return facade;
+    }
+
+
+
     public static DataPlayerFacade getDataPlayerFacade(){
         return DataPlayerFacade.getInstance();
     }
