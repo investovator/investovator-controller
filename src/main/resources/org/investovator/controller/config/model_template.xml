@@ -54,7 +54,9 @@
                 <bean class="net.sourceforge.jabm.agent.AgentList">
                     <constructor-arg>
                         <list>
-                            <agent-list/>
+                            <agent-list>
+                                <!--Auto fill-->
+                            </agent-list>
                         </list>
                     </constructor-arg>
                 </bean>

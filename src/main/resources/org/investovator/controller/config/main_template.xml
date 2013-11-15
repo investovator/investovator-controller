@@ -4,11 +4,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--Auto Fill Imports-->
-    <file-imports />
+    <file-imports>
+        <!--Auto Fill Imports-->
+    </file-imports>
 
-
-    <bean id="simulationManager" class="org.investovator.jasa.multiasset.simulation.HeadlessMultiAssetSimulationManager"
+    <bean id="simulationManager" class="org.investovator.agentsimulation.multiasset.simulation.HeadlessMultiAssetSimulationManager"
           scope="singleton">
         <property name="simulations">
             <list>
@@ -18,15 +18,13 @@
     </bean>
 
 
-    <bean id="exchange" class="org.investovator.jasa.exchange.Exchange" scope="singleton">
+    <bean id="exchange" class="org.investovator.agentsimulation.exchange.Exchange" scope="singleton">
         <property name="stocks">
             <list>
                 <stocks/>   <!--Auto Fill-->
             </list>
         </property>
     </bean>
-
-
 
 
     <!--Define Beans here that should be one for simulation-->
@@ -39,15 +37,14 @@
 
     <!--Hv to ask rajja whether this needed only one :(:)-->
     <bean id="prng" class="cern.jet.random.engine.MersenneTwister64" scope="prototype">
-            <constructor-arg>
-                <bean class="java.util.Date"/>
-            </constructor-arg>
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
     </bean>
 
 
     <!-- Transaction prices are set to the price of the ask -->
     <bean id="stockMarketTimePriorityPricingPolicy" scope="simulation"
-    class="net.sourceforge.jasa.market.rules.StockMarketTimePriorityPricingPolicy">
+          class="net.sourceforge.jasa.market.rules.StockMarketTimePriorityPricingPolicy">
     </bean>
-
 </beans>
