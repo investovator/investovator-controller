@@ -48,6 +48,7 @@ public class ConfigGenerator {
 
     private HashMap<String,String> properties = new HashMap<String, String>();
     private HashMap<String,Integer> agentPopulation = new HashMap<String, Integer>();
+    private HashMap<String, String> propertyFiles = new HashMap<>();
     String[] dependencyReports;
 
     private String modelTemlpateFile;
@@ -95,6 +96,15 @@ public class ConfigGenerator {
         //Create Main File
         String mainFile = String.format("%s/main.xml",outputPath);
         createMainXML(mainFile);
+    }
+
+    /**
+     * Add property files for each stock
+     * @param stockID Company Symbol
+     * @param url url for the properties file
+     */
+    public void addProperties(String stockID, String url){
+        propertyFiles.put(stockID,url);
     }
 
     private void initialize(){
@@ -192,6 +202,7 @@ public class ConfigGenerator {
         //Create Model File
         String modelFile = String.format("%s/%s",outputPath,modelFileName);
         ModelGenerator modelFileGenerator = new ModelGenerator(modelTemlpateFile);
+        modelFileGenerator.setPropertyFileName(propertyFiles.get(stockID));
         modelFileGenerator.setStockID(stockID);
         modelFileGenerator.setOutputFile(modelFile);
         modelFileGenerator.setOutputTemplateDoc(springBeanConfigTemplate);

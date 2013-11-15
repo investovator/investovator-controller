@@ -41,6 +41,7 @@ public class ModelGenerator {
     private HashMap<String,AgentProperties> agentProperties;
     private ArrayList<String> reports;
     private HashMap<String,String> simulationProperties;
+    private String propertyFileName;
 
 
     public ModelGenerator(String templateFile){
@@ -60,6 +61,10 @@ public class ModelGenerator {
 
     public void setOutputFile(String outputFile){
         this.outputFile = outputFile;
+    }
+
+    public void setPropertyFileName(String fileURL){
+        this.propertyFileName = fileURL;
     }
 
 
@@ -131,7 +136,7 @@ public class ModelGenerator {
         outputDoc = outputParser.getXMLDocumentModel();
         Element rootElement = outputDoc.getDocumentElement();
 
-
+        addPropertyConfigurer(rootElement, propertyFileName);
         addController(rootElement, null); //Currently doesn't use replacements
         addSimulation(rootElement, simulationProperties);
         addPopulation(rootElement);
@@ -227,6 +232,26 @@ public class ModelGenerator {
 
     }
 
+
+    private void addPropertyConfigurer(Element parent, String url){
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        String xPathExpressionAttr = "/investovator-config/configurer/*";
+
+        Element controllerElement = null;
+        try {
+            controllerElement = (Element) xpath.evaluate(xPathExpressionAttr, templateDoc, XPathConstants.NODE);
+
+
+            Element result = (Element) outputDoc.importNode(controllerElement, true);
+            parent.appendChild( result );
+            XMLEditor.replacePlaceholderElement( "property-file", result, url);
+
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void replaceReportsPlaceholder(Element controllerBean){
 
