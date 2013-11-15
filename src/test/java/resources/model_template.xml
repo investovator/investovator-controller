@@ -115,8 +115,18 @@
     </agents>
 
 
-    <global-dependencies>
+    <configurer>
+        <bean id="propertyConfigure" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value><property-file><!--Auto Fill--></property-file></value>
+                </list>
+            </property>
+        </bean>
+    </configurer>
 
+
+    <global-dependencies>
 
         <!-- A continuous double auction (CDA) will be used to model the exchange -->
         <bean id="cda$stockID" scope="simulation"
