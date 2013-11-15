@@ -19,6 +19,9 @@
 package org.investovator.controller;
 
 
+import org.investovator.agentsimulation.api.JASAFacade;
+import org.investovator.agentsimulation.api.MarketFacade;
+import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.agentgaming.AgentGameFacade;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
@@ -26,8 +29,6 @@ import org.investovator.controller.utils.events.GameCreationProgressChanged;
 import org.investovator.controller.utils.events.GameEvent;
 import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.controller.utils.exceptions.GameProgressingException;
-import org.investovator.agentsimulation.api.JASAFacade;
-import org.investovator.agentsimulation.api.MarketFacade;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,7 @@ public class GameControllerFacade {
                 currentGameState=GameStates.RUNNING;
                 break;
             case NN_GAME:
+                startNNGame();
                 currentGameMode=GameModes.NN_GAME;
                 currentGameState=GameStates.RUNNING;
                 break;
@@ -115,6 +117,12 @@ public class GameControllerFacade {
         }).start();
     }
 
+    private void startNNGame(){
+
+        NNGamingFacade nnGamingFacade = NNGamingFacade.getInstance();
+        nnGamingFacade.startGame();
+
+    }
 
 
     private void notifyListeners(GameEvent event){
