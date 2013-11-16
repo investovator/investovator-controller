@@ -22,9 +22,9 @@ public class ConfigGeneratorTest {
         generator = new ConfigGenerator(stocks, System.getProperty("user.home") + "/config");
 
         generator.setModelTemlpateFile(RESOURCE_DIR_PATH + "model_template.xml");
-        generator.setReportTemlpateFile(RESOURCE_DIR_PATH +"report_template.xml");
-        generator.setMainTemplateFile(RESOURCE_DIR_PATH +"main_template.xml");
-        generator.setSpringBeanConfigTemplate(RESOURCE_DIR_PATH +"bean-config-template.xml");
+        generator.setReportTemlpateFile(RESOURCE_DIR_PATH + "report_template.xml");
+        generator.setMainTemplateFile(RESOURCE_DIR_PATH + "main_template.xml");
+        generator.setSpringBeanConfigTemplate(RESOURCE_DIR_PATH + "bean-config-template.xml");
     }
 
     @Test
@@ -35,9 +35,10 @@ public class ConfigGeneratorTest {
         generator.setNoOfDays(1);
         generator.setSpeedFactor(1);
 
-        generator.addProperties(stocks[0],stocks[0] + "url");
-        generator.addProperties(stocks[1],stocks[1] + "url");
-        generator.addProperties(stocks[2],stocks[2] + "url");
+        for(int i = 0; i < stocks.length; i++){
+            File file = new File(RESOURCE_DIR_PATH + stocks[i]+".properties");
+            generator.addProperties(stocks[i], "file:"+file.getAbsolutePath() );
+        }
 
         String[] types = generator.getSupportedReports();
         String[] result = generator.getDependencyReportBeans(types[0]);
