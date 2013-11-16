@@ -97,6 +97,8 @@ public class XMLEditor {
 
         } catch (XPathExpressionException e) {
             e.printStackTrace();
+        } catch (NullPointerException e){
+
         }
 
     }
