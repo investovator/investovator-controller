@@ -173,4 +173,12 @@ public class XMLEditor {
         return importElement;
     }
 
+
+    public static Element createPropertyFileElement(Document sourceDoc, String propFileName){
+
+        Element importElement = sourceDoc.createElement("value");
+        importElement.setTextContent(propFileName);
+        return importElement;
+    }
+
 }
