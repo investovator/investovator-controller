@@ -30,6 +30,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -262,13 +263,22 @@ public class ConfigGenerator {
 
 
         //Adding Stocks
-        //Adding controllers
         int stocksCount =  stockIDs.length;
         elements = new Element[stocksCount];
         for (int i = 0; i < stocksCount; i++) {
             elements[i] =   XMLEditor.createControllerElement(mainXmlDoc,stockIDs[i]);
         }
         XMLEditor.replacePlaceholderElement("stocks", mainXmlDoc, elements);
+
+        //Adding Properties
+        String[] propertiesFilesList = propertyFiles.values().toArray(new String[propertyFiles.size()]);
+        int propFileCount =  propertiesFilesList.length;
+        elements = new Element[propFileCount];
+        for (int i = 0; i < propFileCount; i++) {
+            elements[i] =   XMLEditor.createPropertyFileElement(mainXmlDoc, propertiesFilesList[i]);
+        }
+        XMLEditor.replacePlaceholderElement("property-files", mainXmlDoc, elements);
+
 
         templateParser.saveNewXML(mainFile);
 
