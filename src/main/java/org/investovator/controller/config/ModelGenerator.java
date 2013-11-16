@@ -136,7 +136,7 @@ public class ModelGenerator {
         outputDoc = outputParser.getXMLDocumentModel();
         Element rootElement = outputDoc.getDocumentElement();
 
-        addPropertyConfigurer(rootElement, propertyFileName);
+        //addPropertyConfigurer(rootElement, propertyFileName);
         addController(rootElement, null); //Currently doesn't use replacements
         addSimulation(rootElement, simulationProperties);
         addPopulation(rootElement);
@@ -246,6 +246,7 @@ public class ModelGenerator {
             Element result = (Element) outputDoc.importNode(controllerElement, true);
             parent.appendChild( result );
             XMLEditor.replacePlaceholderElement( "property-file", result, url);
+            replacePlaceHolder(result, "$stockID", stockID);
 
 
         } catch (XPathExpressionException e) {
@@ -424,9 +425,7 @@ public class ModelGenerator {
             try {
                 Attr attribute = (Attr) xpath.evaluate(agentExpr,importedElement,XPathConstants.NODE);
 
-                attribute.setValue(replacements.get(next));
-
-
+                if(attribute!=null) attribute.setValue(replacements.get(next));
 
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
