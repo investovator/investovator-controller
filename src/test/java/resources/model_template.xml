@@ -6,7 +6,7 @@
     <controller>
 
         <bean id="$stockIDController"
-              class="net.sourceforge.jabm.SpringSimulationController"
+              class="org.investovator.agentsimulation.InvestovatorSimulationController"
               scope="singleton">
 
             <property name="simulationBeanName">
@@ -38,7 +38,7 @@
             <property name="agentMixer" ref="randomArrivalAgentMixer$stockID"/>
             <property name="agentInitialiser" ref="agentInitialiserProxy$stockID"/>
             <property name="auctioneer" ref="cda$stockID"/>
-            <property name="initialPrice" value="$initialPrice"/>
+            <property name="initialPrice" value="${$stockID.init.price}"/>
             <property name="stockID" value="$stockID" />
             <property name="slowSleepInterval" value="$slowSleepInterval" />
         </bean>
@@ -54,7 +54,9 @@
                 <bean class="net.sourceforge.jabm.agent.AgentList">
                     <constructor-arg>
                         <list>
-                            <agent-list/>
+                            <agent-list>
+                                <!--Auto fill-->
+                            </agent-list>
                         </list>
                     </constructor-arg>
                 </bean>
@@ -114,7 +116,6 @@
 
 
     <global-dependencies>
-
 
         <!-- A continuous double auction (CDA) will be used to model the exchange -->
         <bean id="cda$stockID" scope="simulation"

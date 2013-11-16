@@ -30,6 +30,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -48,6 +49,7 @@ public class ConfigGenerator {
 
     private HashMap<String,String> properties = new HashMap<String, String>();
     private HashMap<String,Integer> agentPopulation = new HashMap<String, Integer>();
+    private HashMap<String, String> propertyFiles = new HashMap<>();
     String[] dependencyReports;
 
     private String modelTemlpateFile;
@@ -95,6 +97,15 @@ public class ConfigGenerator {
         //Create Main File
         String mainFile = String.format("%s/main.xml",outputPath);
         createMainXML(mainFile);
+    }
+
+    /**
+     * Add property files for each stock
+     * @param stockID Company Symbol
+     * @param url url for the properties file
+     */
+    public void addProperties(String stockID, String url){
+        propertyFiles.put(stockID,url);
     }
 
     private void initialize(){
@@ -192,6 +203,7 @@ public class ConfigGenerator {
         //Create Model File
         String modelFile = String.format("%s/%s",outputPath,modelFileName);
         ModelGenerator modelFileGenerator = new ModelGenerator(modelTemlpateFile);
+        modelFileGenerator.setPropertyFileName(propertyFiles.get(stockID));
         modelFileGenerator.setStockID(stockID);
         modelFileGenerator.setOutputFile(modelFile);
         modelFileGenerator.setOutputTemplateDoc(springBeanConfigTemplate);
@@ -251,13 +263,22 @@ public class ConfigGenerator {
 
 
         //Adding Stocks
-        //Adding controllers
         int stocksCount =  stockIDs.length;
         elements = new Element[stocksCount];
         for (int i = 0; i < stocksCount; i++) {
             elements[i] =   XMLEditor.createControllerElement(mainXmlDoc,stockIDs[i]);
         }
         XMLEditor.replacePlaceholderElement("stocks", mainXmlDoc, elements);
+
+        //Adding Properties
+        String[] propertiesFilesList = propertyFiles.values().toArray(new String[propertyFiles.size()]);
+        int propFileCount =  propertiesFilesList.length;
+        elements = new Element[propFileCount];
+        for (int i = 0; i < propFileCount; i++) {
+            elements[i] =   XMLEditor.createPropertyFileElement(mainXmlDoc, propertiesFilesList[i]);
+        }
+        XMLEditor.replacePlaceholderElement("property-files", mainXmlDoc, elements);
+
 
         templateParser.saveNewXML(mainFile);
 

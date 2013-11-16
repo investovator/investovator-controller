@@ -124,6 +124,23 @@ public class XMLEditor {
 
     }
 
+
+    public static void replacePlaceholderElement(String placeholderName, Element doc, String replacement){
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        String xPathExpressionAttr = "//" + placeholderName;
+
+        try {
+            Node reportListElement = (Node) xpath.evaluate(xPathExpressionAttr, doc, XPathConstants.NODE);
+
+            reportListElement.getParentNode().setTextContent(replacement);
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static Element createImportElement(Document sourceDoc, String fileName){
 
         Element importElement = sourceDoc.createElement("import");
@@ -153,6 +170,14 @@ public class XMLEditor {
         Attr bean = sourceDoc.createAttribute("bean");
         bean.setValue(fileName);
         attribs.setNamedItem(bean);
+        return importElement;
+    }
+
+
+    public static Element createPropertyFileElement(Document sourceDoc, String propFileName){
+
+        Element importElement = sourceDoc.createElement("value");
+        importElement.setTextContent(propFileName);
         return importElement;
     }
 
