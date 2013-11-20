@@ -1,5 +1,6 @@
 package org.investovator.controller.config;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,11 +16,13 @@ public class ConfigGeneratorTest {
     private static String RESOURCE_DIR_PATH = "src" + File.separator + "test" + File.separator + "java"
             + File.separator + "resources" + File.separator;
 
+    String outputPath =  System.getProperty("user.home") + "/config/";
+
     ConfigGenerator generator;
 
     @Before
     public void setUp() throws Exception {
-        generator = new ConfigGenerator(stocks, System.getProperty("user.home") + "/config");
+        generator = new ConfigGenerator(stocks, outputPath);
 
         generator.setModelTemlpateFile(RESOURCE_DIR_PATH + "model_template.xml");
         generator.setReportTemlpateFile(RESOURCE_DIR_PATH + "report_template.xml");
@@ -47,5 +50,9 @@ public class ConfigGeneratorTest {
 
 
         generator.createConfigs();
+
+        Assert.assertTrue(new File(outputPath+"main.xml").exists());
+        Assert.assertTrue(new File(outputPath+"model_SAMP.xml").exists());
+        Assert.assertTrue(new File(outputPath+"report_SAMP.xml").exists());
     }
 }
