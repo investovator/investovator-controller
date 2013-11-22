@@ -46,12 +46,12 @@ public class ConfigGenerator {
     private String[] stockIDs;
     private String outputPath;
 
-
     private HashMap<String,String> properties = new HashMap<String, String>();
     private HashMap<String,Integer> agentPopulation = new HashMap<String, Integer>();
     private HashMap<String, String> propertyFiles = new HashMap<>();
     String[] dependencyReports;
 
+    //File paths to template files
     private String modelTemlpateFile;
     private String reportTemlpateFile;
     private String mainTemplateFile;
@@ -61,23 +61,43 @@ public class ConfigGenerator {
     ArrayList<String> listOfImports;
     ArrayList<String> listOfControllers;
 
-
+    /**
+     * Set path for bean template.
+     * @param springBeanConfigTemplate URL to bean template file.
+     */
     public void setSpringBeanConfigTemplate(String springBeanConfigTemplate) {
         this.springBeanConfigTemplate = springBeanConfigTemplate;
     }
 
+    /**
+     * Set path for model template.
+     * @param filePath URL to model template file.
+     */
     public void setModelTemlpateFile(String filePath){
         this.modelTemlpateFile = filePath;
     }
 
+    /**
+     * Set path for report template.
+     * @param reportTemlpateFile URL to report template file.
+     */
     public void setReportTemlpateFile(String reportTemlpateFile) {
         this.reportTemlpateFile = reportTemlpateFile;
     }
 
+    /**
+     * Set path for main template.
+     * @param mainTemplateFile URL to main template file.
+     */
     public void setMainTemplateFile(String mainTemplateFile) {
         this.mainTemplateFile = mainTemplateFile;
     }
 
+    /**
+     * Creates a ConfigGenerator to generate config XML for given stocks in the given output path.
+     * @param stockIDs List of symbol names
+     * @param outputPath URL to output directory
+     */
     public ConfigGenerator(String[] stockIDs, String outputPath){
         this.stockIDs = stockIDs;
         this.outputPath = outputPath;
@@ -89,6 +109,9 @@ public class ConfigGenerator {
         initialize();
     }
 
+    /**
+     * Creates configuration files using current properties.
+     */
     public void createConfigs(){
         for (String stockID : stockIDs) {
             createConfig(stockID);
@@ -166,22 +189,44 @@ public class ConfigGenerator {
         }
     }
 
+    /**
+     * Adds dependency reports for given model.
+     * @param beanNames list of report bean names.
+     */
     public void addDependencyReportBean(String[] beanNames){
        this.dependencyReports = beanNames;
     }
 
+    /**
+     * Returns supported list of agents configured in model.
+     * @return
+     */
     public String[] getSupportedAgentTypes(){
         return  new ModelGenerator(modelTemlpateFile).getSupportedAgentTypes();
     }
 
+    /**
+     * Returns supported list of reports configured in report template.
+     * @return
+     */
     public String[] getSupportedReports(){
         return new ReportGenerator(reportTemlpateFile).getSupportedReports();
     }
 
+    /**
+     * Returns list of dependency beans for a given report type.
+     * @param reportType String representing name of report bean.
+     * @return
+     */
     public String[] getDependencyReportBeans(String reportType){
         return  new ReportGenerator(reportTemlpateFile).getDependencyReportBeans(reportType);
     }
 
+    /**
+     * Add given agent to the simulation.
+     * @param agent Name of the Agent given by getSupportedAgentTypes().
+     * @param populationSize Number of agents to be created.
+     */
     public void addAgent(String agent, int populationSize){
         agentPopulation.put(agent,populationSize);
     }
