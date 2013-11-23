@@ -32,12 +32,12 @@ public interface GameFacade {
 
     public void removeListener(GameEventListener listener);
 
-    public void startGame();
+    public boolean startGame();
 
     public void stopGame();
 
     public void setupGame(Object[] configurations);
 
-    public GameStates getCurrentGameState();
+    public GameModes getGameMode();
 
 }
