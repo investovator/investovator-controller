@@ -19,6 +19,7 @@
 package org.investovator.controller;
 
 import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
 
 /**
@@ -33,8 +34,10 @@ public interface GameFacade {
 
     public void startGame();
 
-    public void stopGame(GameModes gameMode);
+    public void stopGame();
 
-    public void setupGame(GameModes gameMode, Object[] configurations);
+    public void setupGame(Object[] configurations);
+
+    public GameStates getCurrentGameState();
 
 }
