@@ -21,9 +21,12 @@ package org.investovator.controller;
 import org.investovator.ann.nngaming.util.GameTypes;
 import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
+import org.investovator.controller.utils.exceptions.GameCreationException;
 import org.investovator.controller.utils.exceptions.GameProgressingException;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Amila Surendra
@@ -31,9 +34,9 @@ import java.util.HashMap;
  */
 public interface GameController {
 
-    public String createGameInstance(GameTypes type);
+    public String createGameInstance(GameTypes type) throws GameCreationException;
 
-    public HashMap<String, GameFacade> getGameInstances();
+    public List<String> getGameInstances();
 
     public void registerListener(String instance, GameEventListener listener);
 
