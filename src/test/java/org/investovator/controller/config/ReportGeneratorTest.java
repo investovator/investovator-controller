@@ -4,8 +4,16 @@ import junit.framework.Assert;
 import org.apache.directory.api.ldap.model.filter.AssertionType;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -33,16 +41,22 @@ public class ReportGeneratorTest {
     }
 
     @Test
-    public void testGenerateXML() throws Exception {
+    public void testGenerateXMLAndValidation() throws Exception {
 
-        ReportGenerator gen = new ReportGenerator(resourcePath + "report_template.xml");
+        reportGenerator.generateXML("IBM");
 
-        gen.setOutputPath("out.xml");
-        gen.setOutputTemplateDoc(resourcePath + "bean-config-template.xml");
+        URL schemaFile = new URL("http://www.springframework.org/schema/beans/spring-beans.xsd");
+        Source xmlFile = new StreamSource(new File(tempDir +"out.xml"));
 
-        gen.generateXML("IBM");
-
-
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = schemaFactory.newSchema(schemaFile);
+        Validator validator = schema.newValidator();
+        try {
+            validator.validate(xmlFile);
+            Assert.assertTrue(true);
+        } catch (SAXException e) {
+            Assert.assertTrue("Generated report bean xml validation fails.",false);
+        }
     }
 
 
