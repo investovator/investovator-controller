@@ -20,7 +20,9 @@ package org.investovator.controller.agentgaming;
 
 import org.investovator.agentsimulation.api.MarketFacade;
 import org.investovator.controller.GameFacade;
+import org.investovator.controller.GameFactory;
 import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameCreationProgressChanged;
 import org.investovator.controller.utils.events.GameEvent;
 import org.investovator.controller.utils.events.GameEventListener;
@@ -72,18 +74,24 @@ public class AgentGameFacade implements GameFacade {
     }
 
     @Override
-    public void startGame() {
+    public boolean startGame() {
         startAgentGame();
+        return true;
     }
 
     @Override
-    public void stopGame(GameModes gameMode) {
+    public void stopGame() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public void setupGame(GameModes gameMode, Object[] configurations) {
+    public void setupGame(Object[] configurations) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public GameModes getGameMode() {
+        return GameModes.AGENT_GAME;
     }
 
 
