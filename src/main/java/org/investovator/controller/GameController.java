@@ -18,7 +18,7 @@
 
 package org.investovator.controller;
 
-import org.investovator.ann.nngaming.util.GameTypes;
+import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.controller.utils.exceptions.GameCreationException;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public interface GameController {
 
-    public String createGameInstance(GameTypes type) throws GameCreationException;
+    public String createGameInstance(GameModes type) throws GameCreationException;
 
     public List<String> getGameInstances();
 
@@ -42,7 +42,7 @@ public interface GameController {
 
     public void removeListener(String instance, GameEventListener listener);
 
-    public void startGame(String instance) throws GameProgressingException;
+    public boolean startGame(String instance) throws GameProgressingException;
 
     public void stopGame(String instance);
 
