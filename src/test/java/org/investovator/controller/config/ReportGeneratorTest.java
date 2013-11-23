@@ -47,11 +47,6 @@ public class ReportGeneratorTest {
 
 
     @Test
-    public void Test() throws Exception{
-    }
-
-
-    @Test
     public void testGetSupportedReports() throws Exception{
 
         ReportGenerator gen = new ReportGenerator(resourcePath + "report_template.xml");
@@ -70,15 +65,7 @@ public class ReportGeneratorTest {
 
     @Test
     public void testGetDependencyReportBeans() throws Exception{
-
-        ReportGenerator gen = new ReportGenerator(getClass().getResource("report_template.xml").getPath());
-
-        String[] types = gen.getSupportedReports();
-
-        String[] result = gen.getDependencyReportBeans(types[0]);
-
-        for (int i = 0; i < result.length; i++) {
-            System.out.println(result[i]);
-        }
+        String[] result = reportGenerator.getDependencyReportBeans("Spread Time Series");
+        Assert.assertTrue(result[0].equals("spreadTimeSeriesReportVariables$stockID"));
     }
 }
