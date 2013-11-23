@@ -19,31 +19,45 @@
 
 package org.investovator.controller.dataplaybackengine;
 
+import org.investovator.controller.GameFacade;
+import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.dataplaybackengine.DataPlayerFacade;
 
 /**
  * @author: ishan
  * @version: ${Revision}
  */
-public class DataPlaybackGameFacade {
+public class DataPlaybackGameFacade implements GameFacade {
 
-    private static DataPlaybackGameFacade facade;
 
-    private DataPlaybackGameFacade(){
-
+    @Override
+    public void registerListener(GameEventListener listener) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public static synchronized DataPlaybackGameFacade getInstance(){
-        if(facade==null){
-            facade=new DataPlaybackGameFacade();
-        }
-
-        return facade;
+    @Override
+    public void removeListener(GameEventListener listener) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
+    public boolean startGame() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
+    @Override
+    public void stopGame() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-    public static DataPlayerFacade getDataPlayerFacade(){
-        return DataPlayerFacade.getInstance();
+    @Override
+    public void setupGame(Object[] configurations) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public GameModes getGameMode() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
