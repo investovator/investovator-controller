@@ -10,6 +10,9 @@
             <bean-name>currentPriceTimeSeriesReportVariables$stockID</bean-name>
             <bean-name>spreadTimeSeriesReportVariables$stockID</bean-name>
         </report>
+        <report name="Spread Time Series">
+            <bean-name>spreadTimeSeriesReportVariables$stockID</bean-name>
+        </report>
     </reports>
 
     <!--This is not yet implemented-->
