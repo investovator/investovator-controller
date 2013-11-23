@@ -35,10 +35,16 @@ public class GameControllerImpl implements GameController {
 
     private HashMap<String, GameFacade> gameInstances;
     private HashMap<String, GameStates> gameStates;
+    private static GameControllerImpl instance;
 
     private GameControllerImpl(){
         gameInstances = new HashMap<>();
         gameStates = new HashMap<>();
+    }
+
+    public static synchronized GameController getInstance() {
+        if(instance==null) instance = new GameControllerImpl();
+        return instance;
     }
 
     @Override
