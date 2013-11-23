@@ -18,46 +18,83 @@
 
 package org.investovator.controller.agentgaming;
 
+import org.investovator.agentsimulation.api.MarketFacade;
+import org.investovator.controller.GameFacade;
+import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.events.GameCreationProgressChanged;
+import org.investovator.controller.utils.events.GameEvent;
 import org.investovator.controller.utils.events.GameEventListener;
+import org.investovator.controller.utils.exceptions.GameProgressingException;
 import org.investovator.core.data.api.CompanyData;
 import org.investovator.core.data.api.CompanyDataImpl;
 import org.investovator.core.data.exeptions.DataAccessException;
 import org.investovator.agentsimulation.api.JASAFacade;
 
+import java.util.ArrayList;
+
 /**
  * @author Amila Surendra
  * @version $Revision
  */
-public class AgentGameFacade {
+public class AgentGameFacade implements GameFacade {
 
-    PortfolioUpdater updater;
-    CompanyData companyData;
+    private ArrayList<GameEventListener> listeners;
 
-    public AgentGameFacade() {
-        try {
-            companyData = new CompanyDataImpl();
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+    public AgentGameFacade(){
+        listeners = new ArrayList<GameEventListener>();
     }
 
-    public void setupAgentGame(){
 
-        updater = new PortfolioUpdater();
+    private void startAgentGame(){
 
-        try {
-            for(String stock: companyData.getAvailableStockIds()){
-                JASAFacade.getMarketFacade().addListener(stock,updater);
+        MarketFacade simulationFacade = JASAFacade.getMarketFacade();
+        simulationFacade.startSimulation();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 5; i++) {
+
+                    try {
+                        Thread.sleep(1000);
+                        notifyListeners(new GameCreationProgressChanged(GameModes.AGENT_GAME, (((float)i)/4) ));
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        }).start();
+    }
+    @Override
+    public void removeListener(GameEventListener listener) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+    @Override
+    public void startGame() {
+        startAgentGame();
+    }
+
+    @Override
+    public void stopGame(GameModes gameMode) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setupGame(GameModes gameMode, Object[] configurations) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+    private void notifyListeners(GameEvent event){
+        for(GameEventListener listener : listeners){
+            listener.eventOccurred(event);
         }
-
     }
 
     public void registerListener(GameEventListener listener){
-        updater.addListener(listener);
+        //agentGameFacade.registerListener(listener);
+        listeners.add(listener);
     }
-
 }

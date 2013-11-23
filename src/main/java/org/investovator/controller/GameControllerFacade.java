@@ -36,15 +36,13 @@ import java.util.ArrayList;
  * @author Amila Surendra
  * @version $Revision
  */
-public class GameControllerFacade {
+public class GameControllerFacade implements GameFacade {
 
-    private AgentGameFacade agentGameFacade;
     private static GameModes currentGameMode = null;
     private static GameStates currentGameState = GameStates.NEW;
-    private ArrayList<GameEventListener> listeners;
-
-
     private static GameControllerFacade instance;
+    private static GameFacade currentGameFacade;
+
 
     public static GameControllerFacade getInstance() {
         if(instance == null){
@@ -57,12 +55,9 @@ public class GameControllerFacade {
     }
 
     private GameControllerFacade(){
-        listeners = new ArrayList<GameEventListener>();
-        //agentGameFacade = new AgentGameFacade();
-        //agentGameFacade.setupAgentGame();
     }
 
-    public void startGame(GameModes gameMode, Object[] configutrations) throws GameProgressingException{
+    public void startGame(GameModes gameMode) throws GameProgressingException{
 
         if(currentGameState==GameStates.RUNNING) throw new GameProgressingException();
 
@@ -95,27 +90,7 @@ public class GameControllerFacade {
     }
 
 
-    private void startAgentGame(){
 
-        MarketFacade simulationFacade = JASAFacade.getMarketFacade();
-        simulationFacade.startSimulation();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 5; i++) {
-
-                    try {
-                        Thread.sleep(1000);
-                        notifyListeners(new GameCreationProgressChanged(GameModes.AGENT_GAME, (((float)i)/4) ));
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
 
     private void startNNGame(){
 
@@ -126,16 +101,7 @@ public class GameControllerFacade {
     }
 
 
-    private void notifyListeners(GameEvent event){
-         for(GameEventListener listener : listeners){
-             listener.eventOccurred(event);
-         }
-    }
 
-    public void registerListener(GameEventListener listener){
-        //agentGameFacade.registerListener(listener);
-        listeners.add(listener);
-    }
 
     public GameModes getCurrentGameMode(){
         return currentGameMode;
