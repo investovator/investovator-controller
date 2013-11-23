@@ -29,7 +29,6 @@ import java.util.HashMap;
  */
 public class GameFactory {
 
-    private HashMap<GameModes, Class<? extends GameFacade>> classMap;
     private static GameFactory instance;
 
     public static synchronized GameFactory getInstance(){
@@ -37,18 +36,14 @@ public class GameFactory {
         return instance;
     }
 
-    private GameFactory(){
-        classMap = new HashMap<>();
-    }
-
-    public void registerGameType(GameModes type, Class<? extends GameFacade> gameFacade){
-        classMap.put(type, gameFacade);
-    }
-
     public GameFacade createGame(GameModes mode){
-        Class productClass = (Class)classMap.get(mode);
+
         try {
-            return (GameFacade) productClass.newInstance();
+            Class facadeClass = Class.forName(GameModes.getClassName(mode));
+            return (GameFacade) facadeClass.newInstance();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
