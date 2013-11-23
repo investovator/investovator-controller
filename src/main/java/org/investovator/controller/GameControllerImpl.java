@@ -67,12 +67,15 @@ public class GameControllerImpl implements GameController {
     @Override
     public void removeGameInstance(String instance) {
 
-        if(gameStates.get(instance)==GameStates.RUNNING){
-            stopGame(instance);
-        }
+        if(gameInstances.containsKey(instance)){
 
-        gameInstances.remove(instance);
-        gameStates.remove(instance);
+            if(gameStates.get(instance)==GameStates.RUNNING){
+                stopGame(instance);
+            }
+
+            gameInstances.remove(instance);
+            gameStates.remove(instance);
+        }
     }
 
     @Override
