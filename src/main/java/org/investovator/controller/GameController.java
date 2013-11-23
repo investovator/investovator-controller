@@ -36,6 +36,8 @@ public interface GameController {
 
     public String createGameInstance(GameModes type) throws GameCreationException;
 
+    public void removeGameInstance(String instance);
+
     public List<String> getGameInstances();
 
     public void registerListener(String instance, GameEventListener listener);
