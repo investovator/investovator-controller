@@ -1,8 +1,12 @@
 package org.investovator.controller.config;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author Amila Surendra
@@ -10,25 +14,33 @@ import org.junit.Test;
  */
 public class ModelGeneratorTest {
 
-    ModelGenerator generator;
+    private String resourcePath =  "src" + File.separator + "test"   + File.separator + "java"
+            + File.separator + "resources" + File.separator;
+
+    private String tempDir;
+
+    private ModelGenerator generator;
 
     @Before
     public void setUp() throws Exception {
-        generator = new ModelGenerator(getClass().getResource("model_template.xml").getPath());
+        tempDir =  System.getProperty("java.io.tmpdir") +"/";
+        generator = new ModelGenerator(resourcePath+"model_template.xml");
+        generator.setOutputTemplateDoc(resourcePath + "bean-config-template.xml");
         generator.setStockID("GOOG");
-        generator.setOutputFile("out.xml");
-        generator.setOutputTemplateDoc(getClass().getResource("bean-config-template.xml").getPath());
-
+        generator.setOutputFile(tempDir + "out.xml");
     }
 
     @Test
     public void testGetSupportedAgentTypes() throws Exception {
 
         String[] result = generator.getSupportedAgentTypes();
-
+        ArrayList<String> resultList = new ArrayList<>();
         for (int i = 0; i < result.length; i++) {
-            System.out.println(result[i]);
+            resultList.add(result[i]);
         }
+        Assert.assertTrue(resultList.contains("Noise Traders"));
+        Assert.assertTrue(resultList.contains("Fundamentalist Traders"));
+        Assert.assertTrue(resultList.contains("Chartist Traders"));
     }
 
     @Test
