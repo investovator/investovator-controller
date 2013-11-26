@@ -39,7 +39,7 @@ public abstract class DataPlaybackGameCommand implements GameCommand {
      * @param player
      */
     public void setDataPlayer(DataPlayer player) throws CommandSettingsException {
-        player=player;
+        this.player=player;
     }
 
     /**
