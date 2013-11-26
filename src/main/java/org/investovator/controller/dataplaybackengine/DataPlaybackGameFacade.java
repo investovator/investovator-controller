@@ -90,10 +90,9 @@ public class DataPlaybackGameFacade implements GameFacade {
     @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof DataPlaybackGameCommand){
-            DataPlaybackGameCommand dpeCommand=(DataPlaybackGameCommand)command;
-            dpeCommand.setDataPlayer(this.player);
-            dpeCommand.setFacade(this.facade);
-            dpeCommand.execute();
+            ((DataPlaybackGameCommand)command).setDataPlayer(this.player);
+            ((DataPlaybackGameCommand)command).setFacade(this.facade);
+            ((DataPlaybackGameCommand)command).execute();
 
         }
         else{
