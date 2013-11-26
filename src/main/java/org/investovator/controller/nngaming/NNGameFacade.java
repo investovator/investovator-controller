@@ -20,11 +20,9 @@ package org.investovator.controller.nngaming;
 
 import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.GameFacade;
-import org.investovator.controller.agentgaming.AgentGameFacade;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.controller.utils.enums.GameStates;
-import org.investovator.controller.utils.events.GameEventListener;
+import org.investovator.core.commons.events.GameEventListener;
 
 /**
  * @author Amila Surendra

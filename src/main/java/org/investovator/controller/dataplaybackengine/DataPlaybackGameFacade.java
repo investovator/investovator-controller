@@ -24,11 +24,11 @@ import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.controller.utils.events.GameEventListener;
+import org.investovator.core.commons.events.GameEventListener;
 import org.investovator.core.data.api.utils.TradingDataAttribute;
 import org.investovator.dataplaybackengine.DataPlayerFacade;
+import org.investovator.dataplaybackengine.configuration.GameConfiguration;
 import org.investovator.dataplaybackengine.exceptions.GameAlreadyStartedException;
-import org.investovator.dataplaybackengine.player.DailySummaryDataPLayer;
 import org.investovator.dataplaybackengine.player.DataPlayer;
 import org.investovator.dataplaybackengine.player.type.PlayerTypes;
 
@@ -71,16 +71,20 @@ public class DataPlaybackGameFacade implements GameFacade {
 
     @Override
     public void setupGame(Object[] configurations) {
-        PlayerTypes type=(PlayerTypes)configurations[0];
-        String[] symbols=(String[])configurations[1];
-        Date startDate=(Date)configurations[2];
-        ArrayList<TradingDataAttribute> attributes=(ArrayList<TradingDataAttribute>)configurations[3];
-        TradingDataAttribute attrToMatch=(TradingDataAttribute)configurations[4];
-        boolean multiplayer=(boolean)configurations[5];
+//        PlayerTypes type=(PlayerTypes)configurations[0];
+//        String[] symbols=(String[])configurations[1];
+//        Date startDate=(Date)configurations[2];
+//        ArrayList<TradingDataAttribute> attributes=(ArrayList<TradingDataAttribute>)configurations[3];
+//        TradingDataAttribute attrToMatch=(TradingDataAttribute)configurations[4];
+//        boolean multiplayer=(boolean)configurations[5];
 
-        DataPlayerFacade.getInstance().createPlayer(type,symbols,startDate,attributes,attrToMatch,multiplayer);
+        DataPlayerFacade facade=new DataPlayerFacade();
+//        facade.createPlayer(type,symbols,startDate,attributes,attrToMatch,multiplayer);
+//        this.player=facade.getCurrentPlayer();
 
-        this.player=DataPlayerFacade.getInstance().getCurrentPlayer();
+        GameConfiguration config=(GameConfiguration)configurations[0];
+        this.player=facade.createPlayer(config);
+
     }
 
     @Override

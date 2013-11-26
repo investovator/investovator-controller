@@ -21,8 +21,7 @@ package org.investovator.controller;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.controller.utils.enums.GameStates;
-import org.investovator.controller.utils.events.GameEventListener;
+import org.investovator.core.commons.events.GameEventListener;
 
 /**
  * @author Amila Surendra

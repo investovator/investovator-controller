@@ -19,6 +19,7 @@
 package org.investovator.controller.utils.events;
 
 import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.core.commons.events.GameEvent;
 
 /**
  * @author Amila Surendra

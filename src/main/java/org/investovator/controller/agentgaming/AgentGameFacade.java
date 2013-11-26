@@ -20,17 +20,11 @@ package org.investovator.controller.agentgaming;
 
 import org.investovator.agentsimulation.api.MarketFacade;
 import org.investovator.controller.GameFacade;
-import org.investovator.controller.GameFactory;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameCreationProgressChanged;
-import org.investovator.controller.utils.events.GameEvent;
-import org.investovator.controller.utils.events.GameEventListener;
-import org.investovator.controller.utils.exceptions.GameProgressingException;
-import org.investovator.core.data.api.CompanyData;
-import org.investovator.core.data.api.CompanyDataImpl;
-import org.investovator.core.data.exeptions.DataAccessException;
+import org.investovator.core.commons.events.GameEvent;
+import org.investovator.core.commons.events.GameEventListener;
 import org.investovator.agentsimulation.api.JASAFacade;
 
 import java.util.ArrayList;
