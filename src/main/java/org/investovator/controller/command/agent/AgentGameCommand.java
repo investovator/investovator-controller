@@ -27,11 +27,15 @@ import org.investovator.controller.command.GameCommand;
  * @author: ishan
  * @version: ${Revision}
  */
-public interface AgentGameCommand extends GameCommand {
+public abstract class AgentGameCommand implements GameCommand {
+
+    protected JASAFacade facade;
 
     /**
      * Used to set the Facade for the agent game
      * @param facade
      */
-    public void setFacade(JASAFacade facade);
+    public void setFacade(JASAFacade facade){
+        this.facade = facade;
+    }
 }

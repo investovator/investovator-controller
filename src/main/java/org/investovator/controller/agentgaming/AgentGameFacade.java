@@ -21,6 +21,9 @@ package org.investovator.controller.agentgaming;
 import org.investovator.agentsimulation.api.MarketFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.agent.AgentGameCommand;
+import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
+import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.events.GameCreationProgressChanged;
 import org.investovator.core.commons.events.GameEvent;
@@ -36,9 +39,11 @@ import java.util.ArrayList;
 public class AgentGameFacade implements GameFacade {
 
     private ArrayList<GameEventListener> listeners;
+    private JASAFacade facade;
 
     public AgentGameFacade(){
         listeners = new ArrayList<GameEventListener>();
+        facade = JASAFacade.getMarketFacade();
     }
 
 
@@ -90,8 +95,15 @@ public class AgentGameFacade implements GameFacade {
     }
 
     @Override
-    public void runCommand(GameCommand command) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void runCommand(GameCommand command) throws CommandSettingsException{
+        if(command instanceof AgentGameCommand){
+            AgentGameCommand agentCommand=(AgentGameCommand)command;
+            agentCommand.setFacade(this.facade);
+            agentCommand.execute();
+        }
+        else{
+            throw new CommandSettingsException("Invalid command for Agent Gaming engine");
+        }
     }
 
 
