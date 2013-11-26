@@ -98,9 +98,8 @@ public class AgentGameFacade implements GameFacade {
     @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof AgentGameCommand){
-            AgentGameCommand agentCommand=(AgentGameCommand)command;
-            agentCommand.setFacade(this.facade);
-            agentCommand.execute();
+            ((AgentGameCommand)command).setFacade(this.facade);
+            ((AgentGameCommand)command).execute();
         }
         else{
             throw new CommandSettingsException("Invalid command for Agent Gaming engine");
