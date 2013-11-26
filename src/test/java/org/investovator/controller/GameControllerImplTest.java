@@ -20,8 +20,6 @@ package org.investovator.controller;
 
 import junit.framework.Assert;
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.controller.utils.events.GameEvent;
-import org.investovator.controller.utils.events.GameEventListener;
 import org.investovator.controller.utils.exceptions.GameCreationException;
 import org.junit.Before;
 import org.junit.Test;

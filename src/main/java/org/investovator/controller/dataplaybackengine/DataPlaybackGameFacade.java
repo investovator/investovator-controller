@@ -41,17 +41,21 @@ import java.util.Date;
  */
 public class DataPlaybackGameFacade implements GameFacade {
 
-    DataPlayer player;
+    private DataPlayer player;
+    private DataPlayerFacade facade;
 
+    public DataPlaybackGameFacade() {
+        facade=new DataPlayerFacade();
+    }
 
     @Override
     public void registerListener(GameEventListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        player.setObserver(listener);
     }
 
     @Override
     public void removeListener(GameEventListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        player.removeObserver(listener);
     }
 
     @Override
@@ -71,16 +75,6 @@ public class DataPlaybackGameFacade implements GameFacade {
 
     @Override
     public void setupGame(Object[] configurations) {
-//        PlayerTypes type=(PlayerTypes)configurations[0];
-//        String[] symbols=(String[])configurations[1];
-//        Date startDate=(Date)configurations[2];
-//        ArrayList<TradingDataAttribute> attributes=(ArrayList<TradingDataAttribute>)configurations[3];
-//        TradingDataAttribute attrToMatch=(TradingDataAttribute)configurations[4];
-//        boolean multiplayer=(boolean)configurations[5];
-
-        DataPlayerFacade facade=new DataPlayerFacade();
-//        facade.createPlayer(type,symbols,startDate,attributes,attrToMatch,multiplayer);
-//        this.player=facade.getCurrentPlayer();
 
         GameConfiguration config=(GameConfiguration)configurations[0];
         this.player=facade.createPlayer(config);

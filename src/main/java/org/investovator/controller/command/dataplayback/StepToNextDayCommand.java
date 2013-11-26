@@ -27,7 +27,7 @@ import org.investovator.dataplaybackengine.player.DataPlayer;
  * @author: ishan
  * @version: ${Revision}
  */
-public class StepToNextDayCommand implements DataPlaybackGameCommand{
+public class StepToNextDayCommand extends DataPlaybackGameCommand{
 
     DailySummaryDataPLayer pLayer;
     @Override
