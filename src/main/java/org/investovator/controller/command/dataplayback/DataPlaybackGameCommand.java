@@ -20,6 +20,7 @@ package org.investovator.controller.command.dataplayback;
 
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.exception.CommandSettingsException;
+import org.investovator.dataplaybackengine.DataPlayerFacade;
 import org.investovator.dataplaybackengine.player.DataPlayer;
 
 /**
@@ -30,7 +31,18 @@ import org.investovator.dataplaybackengine.player.DataPlayer;
  */
 public abstract class DataPlaybackGameCommand implements GameCommand {
 
-    private DataPlayer player;
+    protected DataPlayer player;
+    protected DataPlayerFacade facade;
+
+    //stores the success/failure of the execute method
+    protected boolean successful;
+    //used to provide a feedback message to the UI
+    protected String statusMessage;
+
+    protected DataPlaybackGameCommand() {
+        this.successful=false;
+        this.statusMessage="Nothing weird happened!";
+    }
 
     /**
      * Used to set the necessary data player in the command object
@@ -47,4 +59,37 @@ public abstract class DataPlaybackGameCommand implements GameCommand {
     public DataPlayer getPlayer(){
         return this.player;
     }
+
+    /**
+     * returns the facade of the backend
+     * @return
+     */
+    public DataPlayerFacade getFacade() {
+        return facade;
+    }
+
+    /**
+     * Used to set the facade of the backend
+     * @param facade
+     */
+    public void setFacade(DataPlayerFacade facade) {
+        this.facade = facade;
+    }
+
+    /**
+     * indicates whether the execute method was carried out successfully or not
+     * @return
+     */
+    public boolean isSuccessful() {
+        return successful;
+    }
+
+    /**
+     * provides a status message for the result of the execute method
+     * @return
+     */
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
 }

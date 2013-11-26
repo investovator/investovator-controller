@@ -91,6 +91,7 @@ public class DataPlaybackGameFacade implements GameFacade {
         if(command instanceof DataPlaybackGameCommand){
             DataPlaybackGameCommand dpeCommand=(DataPlaybackGameCommand)command;
             dpeCommand.setDataPlayer(this.player);
+            dpeCommand.setFacade(this.facade);
             dpeCommand.execute();
 
         }

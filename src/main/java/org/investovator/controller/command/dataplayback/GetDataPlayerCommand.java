@@ -29,11 +29,13 @@ import org.investovator.dataplaybackengine.player.DataPlayer;
  */
 public class GetDataPlayerCommand extends DataPlaybackGameCommand{
 
-
+    public GetDataPlayerCommand() {
+        super();
+    }
 
     @Override
     public void execute() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        successful=true;
     }
 
 
