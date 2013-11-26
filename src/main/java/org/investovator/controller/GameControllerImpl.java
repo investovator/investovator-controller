@@ -19,6 +19,7 @@
 package org.investovator.controller;
 
 import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
@@ -123,7 +124,8 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void runCommand(String instance, GameCommand command) throws CommandSettingsException {
+    public void runCommand(String instance, GameCommand command) throws CommandSettingsException,
+            CommandExecutionException {
         gameInstances.get(instance).runCommand(command);
 
     }

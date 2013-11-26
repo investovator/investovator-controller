@@ -22,6 +22,7 @@ package org.investovator.controller.dataplaybackengine;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.core.commons.events.GameEventListener;
@@ -87,7 +88,7 @@ public class DataPlaybackGameFacade implements GameFacade {
     }
 
     @Override
-    public void runCommand(GameCommand command) throws CommandSettingsException {
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof DataPlaybackGameCommand){
             DataPlaybackGameCommand dpeCommand=(DataPlaybackGameCommand)command;
             dpeCommand.setDataPlayer(this.player);

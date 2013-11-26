@@ -23,6 +23,7 @@ import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.agent.AgentGameCommand;
 import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.events.GameCreationProgressChanged;
@@ -95,7 +96,7 @@ public class AgentGameFacade implements GameFacade {
     }
 
     @Override
-    public void runCommand(GameCommand command) throws CommandSettingsException{
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof AgentGameCommand){
             AgentGameCommand agentCommand=(AgentGameCommand)command;
             agentCommand.setFacade(this.facade);

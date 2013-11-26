@@ -19,6 +19,7 @@
 package org.investovator.controller;
 
 import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.core.commons.events.GameEventListener;
@@ -42,6 +43,6 @@ public interface GameFacade {
 
     public GameModes getGameMode();
 
-    public void runCommand(GameCommand command) throws CommandSettingsException;
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException;
 
 }

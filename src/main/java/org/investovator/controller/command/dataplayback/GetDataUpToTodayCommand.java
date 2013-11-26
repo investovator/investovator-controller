@@ -19,6 +19,7 @@
 
 package org.investovator.controller.command.dataplayback;
 
+import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.core.data.api.utils.StockTradingData;
 import org.investovator.core.data.api.utils.TradingDataAttribute;
 import org.investovator.core.data.exeptions.DataAccessException;
@@ -42,24 +43,21 @@ public class GetDataUpToTodayCommand extends DataPlaybackGameCommand {
     ArrayList<TradingDataAttribute> attributes;
 
     public GetDataUpToTodayCommand(String stock, Date startingDate, ArrayList<TradingDataAttribute> attributes) {
-        super();
         this.stock = stock;
         this.startingDate = startingDate;
         this.attributes = attributes;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws CommandExecutionException {
         try {
             result=facade.getDataUpToToday(stock,startingDate,attributes);
         } catch (DataAccessException e) {
             e.printStackTrace();
-            successful=false;
-            statusMessage="Data Access failed";
+            throw new CommandExecutionException(e.getMessage());
         } catch (DataNotFoundException e) {
             e.printStackTrace();
-            successful=false;
-            statusMessage="Data Access failed";
+            throw new CommandExecutionException(e.getMessage());
         }
 
     }

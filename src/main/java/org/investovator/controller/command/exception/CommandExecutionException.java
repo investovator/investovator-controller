@@ -17,22 +17,14 @@
  */
 
 
-package org.investovator.controller.command.dataplayback;
-
-import org.investovator.controller.command.exception.CommandSettingsException;
-import org.investovator.dataplaybackengine.player.DataPlayer;
+package org.investovator.controller.command.exception;
 
 /**
- * TODO - FOR TESTING ONLY
  * @author: ishan
  * @version: ${Revision}
  */
-public class GetDataPlayerCommand extends DataPlaybackGameCommand{
-
-
-    @Override
-    public void execute() {
+public class CommandExecutionException extends Exception {
+    public CommandExecutionException(String message){
+        super(message);
     }
-
-
 }

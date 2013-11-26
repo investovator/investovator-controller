@@ -34,16 +34,6 @@ public abstract class DataPlaybackGameCommand implements GameCommand {
     protected DataPlayer player;
     protected DataPlayerFacade facade;
 
-    //stores the success/failure of the execute method
-    protected boolean successful;
-    //used to provide a feedback message to the UI
-    protected String statusMessage;
-
-    protected DataPlaybackGameCommand() {
-        this.successful=false;
-        this.statusMessage="Nothing weird happened!";
-    }
-
     /**
      * Used to set the necessary data player in the command object
      * @param player
@@ -74,22 +64,6 @@ public abstract class DataPlaybackGameCommand implements GameCommand {
      */
     public void setFacade(DataPlayerFacade facade) {
         this.facade = facade;
-    }
-
-    /**
-     * indicates whether the execute method was carried out successfully or not
-     * @return
-     */
-    public boolean isSuccessful() {
-        return successful;
-    }
-
-    /**
-     * provides a status message for the result of the execute method
-     * @return
-     */
-    public String getStatusMessage() {
-        return statusMessage;
     }
 
 }

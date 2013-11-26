@@ -18,11 +18,13 @@
 
 package org.investovator.controller.command;
 
+import org.investovator.controller.command.exception.CommandExecutionException;
+
 /**
  * @author: ishan
  * @version: ${Revision}
  */
 public interface GameCommand {
 
-    public void execute();
+    public void execute() throws CommandExecutionException;
 }
