@@ -18,6 +18,8 @@
 
 package org.investovator.controller;
 
+import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
@@ -30,6 +32,7 @@ import java.util.List;
 
 /**
  * @author Amila Surendra
+ * @author Ishan
  * @version $Revision
  */
 public interface GameController {
@@ -51,5 +54,7 @@ public interface GameController {
     public void setupGame(String instance, Object[] configurations);
 
     public GameStates getCurrentGameState(String instance);
+
+    public void runCommand(String instance, GameCommand command) throws CommandSettingsException;
 
 }

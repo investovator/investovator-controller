@@ -19,6 +19,8 @@
 package org.investovator.controller;
 
 import org.investovator.ann.nngaming.util.GameTypes;
+import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
@@ -29,6 +31,7 @@ import java.util.*;
 
 /**
  * @author Amila Surendra
+ * @author Ishan
  * @version $Revision
  */
 public class GameControllerImpl implements GameController {
@@ -118,5 +121,11 @@ public class GameControllerImpl implements GameController {
     @Override
     public GameStates getCurrentGameState(String instance) {
         return gameStates.get(instance);
+    }
+
+    @Override
+    public void runCommand(String instance, GameCommand command) throws CommandSettingsException {
+        gameInstances.get(instance).runCommand(command);
+
     }
 }

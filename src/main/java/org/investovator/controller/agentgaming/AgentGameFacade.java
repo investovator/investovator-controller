@@ -21,6 +21,7 @@ package org.investovator.controller.agentgaming;
 import org.investovator.agentsimulation.api.MarketFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.GameFactory;
+import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameCreationProgressChanged;
@@ -92,6 +93,11 @@ public class AgentGameFacade implements GameFacade {
     @Override
     public GameModes getGameMode() {
         return GameModes.AGENT_GAME;
+    }
+
+    @Override
+    public void runCommand(GameCommand command) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 

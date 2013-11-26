@@ -20,15 +20,28 @@
 package org.investovator.controller.dataplaybackengine;
 
 import org.investovator.controller.GameFacade;
+import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
+import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.events.GameEventListener;
+import org.investovator.core.data.api.utils.TradingDataAttribute;
 import org.investovator.dataplaybackengine.DataPlayerFacade;
+import org.investovator.dataplaybackengine.exceptions.GameAlreadyStartedException;
+import org.investovator.dataplaybackengine.player.DailySummaryDataPLayer;
+import org.investovator.dataplaybackengine.player.DataPlayer;
+import org.investovator.dataplaybackengine.player.type.PlayerTypes;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author: ishan
  * @version: ${Revision}
  */
 public class DataPlaybackGameFacade implements GameFacade {
+
+    DataPlayer player;
 
 
     @Override
@@ -43,21 +56,48 @@ public class DataPlaybackGameFacade implements GameFacade {
 
     @Override
     public boolean startGame() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            this.player.startGame();
+        } catch (GameAlreadyStartedException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void stopGame() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.player.stopGame();
     }
 
     @Override
     public void setupGame(Object[] configurations) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        PlayerTypes type=(PlayerTypes)configurations[0];
+        String[] symbols=(String[])configurations[1];
+        Date startDate=(Date)configurations[2];
+        ArrayList<TradingDataAttribute> attributes=(ArrayList<TradingDataAttribute>)configurations[3];
+        TradingDataAttribute attrToMatch=(TradingDataAttribute)configurations[4];
+        boolean multiplayer=(boolean)configurations[5];
+
+        DataPlayerFacade.getInstance().createPlayer(type,symbols,startDate,attributes,attrToMatch,multiplayer);
+
+        this.player=DataPlayerFacade.getInstance().getCurrentPlayer();
     }
 
     @Override
     public GameModes getGameMode() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return GameModes.PAYBACK_ENG;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void runCommand(GameCommand command) throws CommandSettingsException {
+        if(command instanceof DataPlaybackGameCommand){
+            DataPlaybackGameCommand dpeCommand=(DataPlaybackGameCommand)command;
+            dpeCommand.setDataPlayer(this.player);
+            dpeCommand.execute();
+
+        }
+        else{
+            throw new CommandSettingsException("Invalid command for Data Playback engine");
+        }
     }
 }

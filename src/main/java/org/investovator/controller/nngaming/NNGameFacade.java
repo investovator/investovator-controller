@@ -21,6 +21,7 @@ package org.investovator.controller.nngaming;
 import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.agentgaming.AgentGameFacade;
+import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.events.GameEventListener;
@@ -61,5 +62,10 @@ public class NNGameFacade implements GameFacade {
     @Override
     public GameModes getGameMode() {
         return GameModes.NN_GAME;
+    }
+
+    @Override
+    public void runCommand(GameCommand command) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
