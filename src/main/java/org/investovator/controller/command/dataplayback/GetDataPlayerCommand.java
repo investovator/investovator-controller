@@ -27,19 +27,14 @@ import org.investovator.dataplaybackengine.player.DataPlayer;
  * @author: ishan
  * @version: ${Revision}
  */
-public class GetDataPlayerCommand implements DataPlaybackGameCommand{
-    DataPlayer player;
-    @Override
-    public void setDataPlayer(DataPlayer player) throws CommandSettingsException {
-        this.player=player;
-    }
+public class GetDataPlayerCommand extends DataPlaybackGameCommand{
+
+
 
     @Override
     public void execute() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public DataPlayer getPlayer(){
-        return this.player;
-    }
+
 }

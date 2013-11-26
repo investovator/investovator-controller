@@ -28,11 +28,23 @@ import org.investovator.dataplaybackengine.player.DataPlayer;
  * @author: ishan
  * @version: ${Revision}
  */
-public interface DataPlaybackGameCommand extends GameCommand {
+public abstract class DataPlaybackGameCommand implements GameCommand {
+
+    private DataPlayer player;
 
     /**
      * Used to set the necessary data player in the command object
      * @param player
      */
-    public void setDataPlayer(DataPlayer player) throws CommandSettingsException;
+    public void setDataPlayer(DataPlayer player) throws CommandSettingsException {
+        player=player;
+    }
+
+    /**
+     * Returns the data player in the command object
+     * @return
+     */
+    public DataPlayer getPlayer(){
+        return this.player;
+    }
 }
