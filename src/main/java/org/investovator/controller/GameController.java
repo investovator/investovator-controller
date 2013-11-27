@@ -60,4 +60,6 @@ public interface GameController {
 
     public String getDescription(String instance);
 
+    public GameModes getGameMode(String instance);
+
 }

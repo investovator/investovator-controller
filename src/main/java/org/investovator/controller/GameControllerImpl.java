@@ -148,4 +148,13 @@ public class GameControllerImpl implements GameController {
 
         return null;
     }
+
+    @Override
+    public GameModes getGameMode(String instance) {
+        if(gameInstances.containsKey(instance)){
+            return gameInstances.get(instance).getGameMode();
+        }
+
+        return null;
+    }
 }
