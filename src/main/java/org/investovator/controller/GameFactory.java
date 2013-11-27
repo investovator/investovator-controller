@@ -16,33 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.investovator.controller.utils.events;
+package org.investovator.controller;
 
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.core.commons.events.GameEvent;
+
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
 
 /**
  * @author Amila Surendra
  * @version $Revision
  */
-public class GameCreationProgressChanged extends GameEvent {
+public class GameFactory {
 
-    private GameModes gameMode;
-    private float progress;
+    private static GameFactory instance;
 
-    public GameCreationProgressChanged(GameModes gameMode, float progress) {
-        this.gameMode = gameMode;
-        this.progress = progress;
+    public static synchronized GameFactory getInstance(){
+        if(instance == null) instance = new GameFactory();
+        return instance;
     }
 
-    public GameModes getGameMode(){
-       return gameMode;
-    }
-    public void setGameMode(GameModes gameMode) {
-        this.gameMode = gameMode;
+    public GameFacade createGame(GameModes mode){
+
+        try {
+            Class facadeClass = Class.forName(GameModes.getClassName(mode));
+            return (GameFacade) facadeClass.newInstance();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public float getProgress() {
-        return progress;
-    }
 }

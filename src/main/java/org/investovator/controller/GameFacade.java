@@ -16,33 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.investovator.controller.utils.events;
+package org.investovator.controller;
 
+import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
+import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
-import org.investovator.core.commons.events.GameEvent;
+import org.investovator.core.commons.events.GameEventListener;
 
 /**
  * @author Amila Surendra
+ * @author Ishan
  * @version $Revision
  */
-public class GameCreationProgressChanged extends GameEvent {
+public interface GameFacade {
 
-    private GameModes gameMode;
-    private float progress;
+    public void registerListener(GameEventListener listener);
 
-    public GameCreationProgressChanged(GameModes gameMode, float progress) {
-        this.gameMode = gameMode;
-        this.progress = progress;
-    }
+    public void removeListener(GameEventListener listener);
 
-    public GameModes getGameMode(){
-       return gameMode;
-    }
-    public void setGameMode(GameModes gameMode) {
-        this.gameMode = gameMode;
-    }
+    public boolean startGame();
 
-    public float getProgress() {
-        return progress;
-    }
+    public void stopGame();
+
+    public void setupGame(Object[] configurations);
+
+    public GameModes getGameMode();
+
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException;
+
 }

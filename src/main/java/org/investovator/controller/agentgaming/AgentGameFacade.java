@@ -18,46 +18,103 @@
 
 package org.investovator.controller.agentgaming;
 
-import org.investovator.controller.utils.events.GameEventListener;
-import org.investovator.core.data.api.CompanyData;
-import org.investovator.core.data.api.CompanyDataImpl;
-import org.investovator.core.data.exeptions.DataAccessException;
+import org.investovator.agentsimulation.api.MarketFacade;
+import org.investovator.controller.GameFacade;
+import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.agent.AgentGameCommand;
+import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
+import org.investovator.controller.command.exception.CommandSettingsException;
+import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.events.GameCreationProgressChanged;
+import org.investovator.core.commons.events.GameEvent;
+import org.investovator.core.commons.events.GameEventListener;
 import org.investovator.agentsimulation.api.JASAFacade;
+
+import java.util.ArrayList;
 
 /**
  * @author Amila Surendra
  * @version $Revision
  */
-public class AgentGameFacade {
+public class AgentGameFacade implements GameFacade {
 
-    PortfolioUpdater updater;
-    CompanyData companyData;
+    private ArrayList<GameEventListener> listeners;
+    private JASAFacade facade;
 
-    public AgentGameFacade() {
-        try {
-            companyData = new CompanyDataImpl();
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+    public AgentGameFacade(){
+        listeners = new ArrayList<GameEventListener>();
+        facade = JASAFacade.getMarketFacade();
+    }
+
+
+    private void startAgentGame(){
+
+        MarketFacade simulationFacade = JASAFacade.getMarketFacade();
+        simulationFacade.startSimulation();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 5; i++) {
+
+                    try {
+                        Thread.sleep(1000);
+                        notifyListeners(new GameCreationProgressChanged(GameModes.AGENT_GAME, (((float)i)/4) ));
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+    @Override
+    public void removeListener(GameEventListener listener) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean startGame() {
+        startAgentGame();
+        return true;
+    }
+
+    @Override
+    public void stopGame() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setupGame(Object[] configurations) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public GameModes getGameMode() {
+        return GameModes.AGENT_GAME;
+    }
+
+    @Override
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
+        if(command instanceof AgentGameCommand){
+            ((AgentGameCommand)command).setFacade(this.facade);
+            ((AgentGameCommand)command).execute();
+        }
+        else{
+            throw new CommandSettingsException("Invalid command for Agent Gaming engine");
         }
     }
 
-    public void setupAgentGame(){
 
-        updater = new PortfolioUpdater();
-
-        try {
-            for(String stock: companyData.getAvailableStockIds()){
-                JASAFacade.getMarketFacade().addListener(stock,updater);
-            }
-
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+    private void notifyListeners(GameEvent event){
+        for(GameEventListener listener : listeners){
+            listener.eventOccurred(event);
         }
-
     }
 
     public void registerListener(GameEventListener listener){
-        updater.addListener(listener);
+        //agentGameFacade.registerListener(listener);
+        listeners.add(listener);
     }
-
 }

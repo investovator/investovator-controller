@@ -19,31 +19,84 @@
 
 package org.investovator.controller.dataplaybackengine;
 
+import org.investovator.controller.GameFacade;
+import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
+import org.investovator.controller.command.exception.CommandSettingsException;
+import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.core.commons.events.GameEventListener;
+import org.investovator.core.data.api.utils.TradingDataAttribute;
 import org.investovator.dataplaybackengine.DataPlayerFacade;
+import org.investovator.dataplaybackengine.configuration.GameConfiguration;
+import org.investovator.dataplaybackengine.exceptions.GameAlreadyStartedException;
+import org.investovator.dataplaybackengine.player.DataPlayer;
+import org.investovator.dataplaybackengine.player.type.PlayerTypes;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author: ishan
  * @version: ${Revision}
  */
-public class DataPlaybackGameFacade {
+public class DataPlaybackGameFacade implements GameFacade {
 
-    private static DataPlaybackGameFacade facade;
+    private DataPlayer player;
+    private DataPlayerFacade facade;
 
-    private DataPlaybackGameFacade(){
-
+    public DataPlaybackGameFacade() {
+        facade=new DataPlayerFacade();
     }
 
-    public static synchronized DataPlaybackGameFacade getInstance(){
-        if(facade==null){
-            facade=new DataPlaybackGameFacade();
+    @Override
+    public void registerListener(GameEventListener listener) {
+        player.setObserver(listener);
+    }
+
+    @Override
+    public void removeListener(GameEventListener listener) {
+        player.removeObserver(listener);
+    }
+
+    @Override
+    public boolean startGame() {
+        try {
+            this.player.startGame();
+        } catch (GameAlreadyStartedException e) {
+            return false;
         }
-
-        return facade;
+        return true;
     }
 
+    @Override
+    public void stopGame() {
+        this.player.stopGame();
+    }
 
+    @Override
+    public void setupGame(Object[] configurations) {
 
-    public static DataPlayerFacade getDataPlayerFacade(){
-        return DataPlayerFacade.getInstance();
+        GameConfiguration config=(GameConfiguration)configurations[0];
+        this.player=facade.createPlayer(config);
+
+    }
+
+    @Override
+    public GameModes getGameMode() {
+        return GameModes.PAYBACK_ENG;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
+        if(command instanceof DataPlaybackGameCommand){
+            ((DataPlaybackGameCommand)command).setDataPlayer(this.player);
+            ((DataPlaybackGameCommand)command).setFacade(this.facade);
+            ((DataPlaybackGameCommand)command).execute();
+
+        }
+        else{
+            throw new CommandSettingsException("Invalid command for Data Playback engine");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package org.investovator.controller.utils.events;
 
+import org.investovator.core.commons.events.GameEvent;
 import org.investovator.core.commons.utils.Portfolio;
 
 /**

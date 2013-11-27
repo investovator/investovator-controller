@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.investovator.controller.utils.events;
-
-import java.io.Serializable;
+package org.investovator.controller.utils.exceptions;
 
 /**
  * @author Amila Surendra
  * @version $Revision
  */
-public class GameEvent implements Serializable {
+public class GameCreationException extends GameException {
 
+    public GameCreationException(String message) {
+        super(message);
+    }
 }
