@@ -63,6 +63,16 @@ public class NNGameFacade implements GameFacade {
     }
 
     @Override
+    public String getName() {
+        return "Prediction Based Game";
+    }
+
+    @Override
+    public String getDescription() {
+        return "This game allows user to play on real market data predicted ";
+    }
+
+    @Override
     public void runCommand(GameCommand command) {
         //To change body of implemented methods use File | Settings | File Templates.
     }

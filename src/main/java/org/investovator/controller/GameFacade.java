@@ -43,6 +43,10 @@ public interface GameFacade {
 
     public GameModes getGameMode();
 
+    public String getName();
+
+    public String getDescription();
+
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException;
 
 }

@@ -88,6 +88,16 @@ public class DataPlaybackGameFacade implements GameFacade {
     }
 
     @Override
+    public String getName() {
+        return "Historical Data Playback Game";
+    }
+
+    @Override
+    public String getDescription() {
+        return "This game allows users to playback real historical market data.";
+    }
+
+    @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof DataPlaybackGameCommand){
             ((DataPlaybackGameCommand)command).setDataPlayer(this.player);

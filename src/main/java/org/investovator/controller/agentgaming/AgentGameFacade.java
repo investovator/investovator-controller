@@ -96,6 +96,17 @@ public class AgentGameFacade implements GameFacade {
     }
 
     @Override
+    public String getName() {
+        return  "Artificial Players Based Game";
+    }
+
+    @Override
+    public String getDescription() {
+       return  "This is a game based on several artificial players configured to trade using different trading " +
+               "strategies.";
+    }
+
+    @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof AgentGameCommand){
             ((AgentGameCommand)command).setFacade(this.facade);

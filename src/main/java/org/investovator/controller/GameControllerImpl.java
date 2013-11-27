@@ -129,4 +129,23 @@ public class GameControllerImpl implements GameController {
         gameInstances.get(instance).runCommand(command);
 
     }
+
+    @Override
+    public String getName(String instance) {
+
+        if(gameInstances.containsKey(instance)){
+            return gameInstances.get(instance).getName();
+        }
+
+        return null;
+    }
+
+    @Override
+    public String getDescription(String instance) {
+        if(gameInstances.containsKey(instance)){
+            return gameInstances.get(instance).getDescription();
+        }
+
+        return null;
+    }
 }
