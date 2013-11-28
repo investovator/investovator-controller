@@ -71,7 +71,9 @@ public class AgentGameFacade implements GameFacade {
     }
     @Override
     public void removeListener(GameEventListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(listeners.contains(listener)){
+            listeners.remove(listener);
+        }
     }
 
     @Override
@@ -82,12 +84,12 @@ public class AgentGameFacade implements GameFacade {
 
     @Override
     public void stopGame() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        facade.terminateSimulation();
     }
 
     @Override
     public void setupGame(Object[] configurations) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
@@ -125,7 +127,6 @@ public class AgentGameFacade implements GameFacade {
     }
 
     public void registerListener(GameEventListener listener){
-        //agentGameFacade.registerListener(listener);
         listeners.add(listener);
     }
 }
