@@ -1,6 +1,5 @@
 package org.investovator.controller.command.agent;
 
-import org.investovator.agentsimulation.api.JASAFacade;
 import org.investovator.core.commons.simulationengine.MarketOrder;
 
 import java.util.ArrayList;
@@ -25,6 +24,6 @@ public class UnmatchedOrdersCommand extends AgentGameCommand {
 
     @Override
     public void execute() {
-//        result=facade.getUserUnmatchedOrders(userName);
+        result=facade.getUserUnmatchedOrders(userName);
     }
 }

@@ -21,7 +21,7 @@ public class AgentGameFacadeTest {
 
     AgentGameFacade facade;
 
-    String[] stocks = {"IBM","GOOG","SAMP"};
+    String[] stocks = {"SAMP"};
     private static String RESOURCE_DIR_PATH = "src" + File.separator + "test" + File.separator + "java"
             + File.separator + "resources" + File.separator;
     String outputPath =  System.getProperty("java.io.tmpdir")+"/";
@@ -75,6 +75,7 @@ public class AgentGameFacadeTest {
 
         Assert.assertTrue(orders.get("SAMP").size()>0);
 
+        facade.stopGame();
 
 
     }

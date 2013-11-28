@@ -23,16 +23,14 @@ import net.sourceforge.jabm.event.SimEvent;
 import net.sourceforge.jasa.agent.TradingAgent;
 import net.sourceforge.jasa.event.TransactionExecutedEvent;
 import net.sourceforge.jasa.market.Order;
-import org.investovator.core.commons.events.GameEvent;
-import org.investovator.core.commons.events.GameEventListener;
-import org.investovator.controller.utils.events.PortfolioChangedEvent;
-import org.investovator.core.commons.utils.Portfolio;
-import org.investovator.core.data.api.UserData;
-import org.investovator.core.data.api.UserDataImpl;
-import org.investovator.core.data.exeptions.DataAccessException;
 import org.investovator.agentsimulation.api.JASAFacade;
 import org.investovator.agentsimulation.api.MarketFacade;
 import org.investovator.agentsimulation.api.utils.HollowTradingAgent;
+import org.investovator.core.commons.events.GameEvent;
+import org.investovator.core.commons.events.GameEventListener;
+import org.investovator.core.data.api.UserData;
+import org.investovator.core.data.api.UserDataImpl;
+import org.investovator.core.data.exeptions.DataAccessException;
 
 import java.util.ArrayList;
 
@@ -83,17 +81,17 @@ public class PortfolioUpdater implements EventListener {
 
                 String buyingUser = ((HollowTradingAgent) buyer).getUserName();
 
-                try {
-                    Portfolio buyerPortfolio = userData.getUserPortfolio(buyingUser);
+               // try {
+                  //  Portfolio buyerPortfolio = userData.getUserPortfolio(buyingUser);
                     String stockID = ((TransactionExecutedEvent) simEvent).getAuction().getStockID();
-                    buyerPortfolio.boughtShares(stockID,transactionEvent.getQuantity(),(float)transactionEvent.getPrice());
+                 //   buyerPortfolio.boughtShares(stockID,transactionEvent.getQuantity(),(float)transactionEvent.getPrice());
 
-                    userData.updateUserPortfolio(buyingUser, buyerPortfolio);
-                    notifyListeners(new PortfolioChangedEvent(buyerPortfolio));
+                   // userData.updateUserPortfolio(buyingUser, buyerPortfolio);
+                 //   notifyListeners(new PortfolioChangedEvent(buyerPortfolio));
 
-                } catch (DataAccessException e) {
-                    e.printStackTrace();
-                }
+            //    } catch (DataAccessException e) {
+           //         e.printStackTrace();
+             //   }
 
 
             }

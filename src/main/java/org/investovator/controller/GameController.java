@@ -56,4 +56,10 @@ public interface GameController {
 
     public void runCommand(String instance, GameCommand command) throws CommandSettingsException, CommandExecutionException;
 
+    public String getName(String instance);
+
+    public String getDescription(String instance);
+
+    public GameModes getGameMode(String instance);
+
 }

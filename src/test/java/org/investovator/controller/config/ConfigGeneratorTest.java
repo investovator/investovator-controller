@@ -16,7 +16,7 @@ public class ConfigGeneratorTest {
     private static String RESOURCE_DIR_PATH = "src" + File.separator + "test" + File.separator + "java"
             + File.separator + "resources" + File.separator;
 
-    String outputPath =  System.getProperty("user.home") + "/config/";
+    String outputPath =  System.getProperty("java.io.tmpdir") +"/";
 
     ConfigGenerator generator;
 

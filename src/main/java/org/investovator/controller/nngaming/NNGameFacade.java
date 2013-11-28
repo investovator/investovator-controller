@@ -86,6 +86,16 @@ public class NNGameFacade implements GameFacade {
     }
 
     @Override
+    public String getName() {
+        return "Prediction Based Game";
+    }
+
+    @Override
+    public String getDescription() {
+        return "This game allows user to play on predicted market data";
+    }
+
+    @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof ANNGameCommand){
             ANNGameCommand nnCommand=(ANNGameCommand)command;

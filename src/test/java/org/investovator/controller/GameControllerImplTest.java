@@ -19,11 +19,16 @@
 package org.investovator.controller;
 
 import junit.framework.Assert;
+import org.investovator.controller.agentgaming.AgentGameFacade;
+import org.investovator.controller.config.ConfigGenerator;
 import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.enums.GameStates;
 import org.investovator.controller.utils.exceptions.GameCreationException;
+import org.investovator.controller.utils.exceptions.GameProgressingException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -33,9 +38,20 @@ import java.util.ArrayList;
 public class GameControllerImplTest {
 
     GameController controller;
+    AgentGameFacade facade;
+
+    String[] stocks = {"IBM"};
+    private static String RESOURCE_DIR_PATH = "src" + File.separator + "test" + File.separator + "java"
+            + File.separator + "resources" + File.separator;
+    String outputPath =  System.getProperty("java.io.tmpdir")+"/";
+    ConfigGenerator generator;
 
     @Before
     public void setUp() throws Exception {
+        createConfig();
+        System.setProperty("jabm.config", outputPath + "main.xml");
+        facade = new AgentGameFacade();
+
         controller = GameControllerImpl.getInstance();
 
     }
@@ -71,6 +87,69 @@ public class GameControllerImplTest {
         }
 
         controller.removeGameInstance(agentGame);
+
+    }
+
+
+    @Test
+    public void testGameStates() throws GameCreationException, GameProgressingException, InterruptedException {
+
+        String instance = controller.createGameInstance(GameModes.AGENT_GAME);
+        Assert.assertEquals(controller.getCurrentGameState(instance), GameStates.NEW);
+        controller.setupGame(instance, new Object[]{});
+        Assert.assertEquals(controller.getCurrentGameState(instance), GameStates.CONFIGURED);
+        controller.startGame(instance);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                System.out.println("starting ....");
+
+                for (int i = 0; i < 5; i++) {
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        t.start();
+        t.join();
+
+        Assert.assertEquals(controller.getCurrentGameState(instance), GameStates.RUNNING);
+        controller.removeGameInstance(instance);
+
+    }
+
+
+    private void createConfig(){
+
+        generator = new ConfigGenerator(stocks, outputPath);
+
+        generator.setModelTemlpateFile(RESOURCE_DIR_PATH + "model_template.xml");
+        generator.setReportTemlpateFile(RESOURCE_DIR_PATH + "report_template.xml");
+        generator.setMainTemplateFile(RESOURCE_DIR_PATH + "main_template.xml");
+        generator.setSpringBeanConfigTemplate(RESOURCE_DIR_PATH + "bean-config-template.xml");
+
+        generator.addAgent("Linear Combination Traders",100);
+        generator.setInitialPrice(100);
+        generator.setNoOfDays(1);
+        generator.setSpeedFactor(1);
+
+        for(int i = 0; i < stocks.length; i++){
+            File file = new File(RESOURCE_DIR_PATH + stocks[i]+".properties");
+            generator.addProperties(stocks[i], "file:"+file.getAbsolutePath() );
+        }
+
+        String[] types = generator.getSupportedReports();
+        String[] result = generator.getDependencyReportBeans(types[0]);
+        generator.addDependencyReportBean(result);
+
+        generator.createConfigs();
 
     }
 

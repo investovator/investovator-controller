@@ -26,15 +26,10 @@ import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.core.commons.events.GameEventListener;
-import org.investovator.core.data.api.utils.TradingDataAttribute;
 import org.investovator.dataplaybackengine.DataPlayerFacade;
 import org.investovator.dataplaybackengine.configuration.GameConfiguration;
 import org.investovator.dataplaybackengine.exceptions.GameAlreadyStartedException;
 import org.investovator.dataplaybackengine.player.DataPlayer;
-import org.investovator.dataplaybackengine.player.type.PlayerTypes;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @author: ishan
@@ -88,12 +83,21 @@ public class DataPlaybackGameFacade implements GameFacade {
     }
 
     @Override
+    public String getName() {
+        return "Historical Data Playback Game";
+    }
+
+    @Override
+    public String getDescription() {
+        return "This game allows users to playback real historical market data.";
+    }
+
+    @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof DataPlaybackGameCommand){
-            DataPlaybackGameCommand dpeCommand=(DataPlaybackGameCommand)command;
-            dpeCommand.setDataPlayer(this.player);
-            dpeCommand.setFacade(this.facade);
-            dpeCommand.execute();
+            ((DataPlaybackGameCommand)command).setDataPlayer(this.player);
+            ((DataPlaybackGameCommand)command).setFacade(this.facade);
+            ((DataPlaybackGameCommand)command).execute();
 
         }
         else{

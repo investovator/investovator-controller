@@ -61,4 +61,8 @@ public class GetDataUpToTodayCommand extends DataPlaybackGameCommand {
         }
 
     }
+
+    public StockTradingData getResult(){
+        return result;
+    }
 }

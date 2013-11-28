@@ -18,18 +18,17 @@
 
 package org.investovator.controller.agentgaming;
 
+import org.investovator.agentsimulation.api.JASAFacade;
 import org.investovator.agentsimulation.api.MarketFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.agent.AgentGameCommand;
-import org.investovator.controller.command.dataplayback.DataPlaybackGameCommand;
 import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.controller.utils.events.GameCreationProgressChanged;
 import org.investovator.core.commons.events.GameEvent;
 import org.investovator.core.commons.events.GameEventListener;
-import org.investovator.agentsimulation.api.JASAFacade;
 
 import java.util.ArrayList;
 
@@ -71,7 +70,9 @@ public class AgentGameFacade implements GameFacade {
     }
     @Override
     public void removeListener(GameEventListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(listeners.contains(listener)){
+            listeners.remove(listener);
+        }
     }
 
     @Override
@@ -82,12 +83,12 @@ public class AgentGameFacade implements GameFacade {
 
     @Override
     public void stopGame() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        facade.terminateSimulation();
     }
 
     @Override
     public void setupGame(Object[] configurations) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
@@ -96,11 +97,21 @@ public class AgentGameFacade implements GameFacade {
     }
 
     @Override
+    public String getName() {
+        return  "Artificial Players Based Game";
+    }
+
+    @Override
+    public String getDescription() {
+       return  "This is a game based on several artificial players configured to trade using different trading " +
+               "strategies.";
+    }
+
+    @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof AgentGameCommand){
-            AgentGameCommand agentCommand=(AgentGameCommand)command;
-            agentCommand.setFacade(this.facade);
-            agentCommand.execute();
+            ((AgentGameCommand)command).setFacade(this.facade);
+            ((AgentGameCommand)command).execute();
         }
         else{
             throw new CommandSettingsException("Invalid command for Agent Gaming engine");
@@ -115,7 +126,6 @@ public class AgentGameFacade implements GameFacade {
     }
 
     public void registerListener(GameEventListener listener){
-        //agentGameFacade.registerListener(listener);
         listeners.add(listener);
     }
 }

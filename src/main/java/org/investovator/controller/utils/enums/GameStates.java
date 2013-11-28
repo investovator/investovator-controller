@@ -25,8 +25,7 @@ package org.investovator.controller.utils.enums;
 public enum GameStates{
     NEW,
     CONFIGURED,
-    RUNNING,
-    STOPPED
+    RUNNING
 }
 
 
