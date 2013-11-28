@@ -40,23 +40,23 @@ public class GameControllerImpl implements GameController {
     private HashMap<String, GameStates> gameStates;
     private static GameControllerImpl instance;
 
-    private GameControllerImpl(){
+    private GameControllerImpl() {
         gameInstances = new HashMap<>();
         gameStates = new HashMap<>();
     }
 
     public static synchronized GameController getInstance() {
-        if(instance==null) instance = new GameControllerImpl();
+        if (instance == null) instance = new GameControllerImpl();
         return instance;
     }
 
     @Override
-    public String createGameInstance(GameModes type) throws GameCreationException{
+    public String createGameInstance(GameModes type) throws GameCreationException {
         Collection<GameFacade> facades = gameInstances.values();
 
         for (Iterator<GameFacade> facade = facades.iterator(); facade.hasNext(); ) {
             GameFacade next = facade.next();
-            if(next.getGameMode() == type) throw new GameCreationException("Game Mode Already Exists");
+            if (next.getGameMode() == type) throw new GameCreationException("Game Mode Already Exists");
         }
 
         String instanceId = type.toString();
@@ -70,21 +70,22 @@ public class GameControllerImpl implements GameController {
     @Override
     public void removeGameInstance(String instance) {
 
-        if(gameInstances.containsKey(instance)){
+        if (gameInstances.containsKey(instance)) {
 
-            if(gameStates.get(instance)==GameStates.RUNNING){
+            if (gameStates.get(instance) == GameStates.RUNNING) {
                 stopGame(instance);
-            }
+            } else {
 
-            gameInstances.remove(instance);
-            gameStates.remove(instance);
+                gameInstances.remove(instance);
+                gameStates.remove(instance);
+            }
         }
     }
 
     @Override
     public List<String> getGameInstances() {
-        List<String> instanceList =  new ArrayList<>();
-        instanceList.addAll(gameInstances.keySet()) ;
+        List<String> instanceList = new ArrayList<>();
+        instanceList.addAll(gameInstances.keySet());
         return instanceList;
     }
 
@@ -101,7 +102,7 @@ public class GameControllerImpl implements GameController {
     @Override
     public boolean startGame(String instance) throws GameProgressingException {
         boolean status = gameInstances.get(instance).startGame();
-        if(status){
+        if (status) {
             gameStates.put(instance, GameStates.RUNNING);
         }
         return status;
@@ -111,11 +112,13 @@ public class GameControllerImpl implements GameController {
     public void stopGame(String instance) {
         gameInstances.get(instance).stopGame();
         gameInstances.remove(instance);
+        gameStates.remove(instance);
     }
 
     @Override
     public void setupGame(String instance, Object[] configurations) {
         gameInstances.get(instance).setupGame(configurations);
+        gameStates.put(instance, GameStates.CONFIGURED);
     }
 
     @Override
@@ -133,7 +136,7 @@ public class GameControllerImpl implements GameController {
     @Override
     public String getName(String instance) {
 
-        if(gameInstances.containsKey(instance)){
+        if (gameInstances.containsKey(instance)) {
             return gameInstances.get(instance).getName();
         }
 
@@ -142,7 +145,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public String getDescription(String instance) {
-        if(gameInstances.containsKey(instance)){
+        if (gameInstances.containsKey(instance)) {
             return gameInstances.get(instance).getDescription();
         }
 
@@ -151,7 +154,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public GameModes getGameMode(String instance) {
-        if(gameInstances.containsKey(instance)){
+        if (gameInstances.containsKey(instance)) {
             return gameInstances.get(instance).getGameMode();
         }
 
