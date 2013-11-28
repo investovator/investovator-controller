@@ -110,7 +110,7 @@ public class GameControllerImpl implements GameController {
     @Override
     public void stopGame(String instance) {
         gameInstances.get(instance).stopGame();
-        gameStates.put(instance, GameStates.STOPPED);
+        gameInstances.remove(instance);
     }
 
     @Override
