@@ -18,6 +18,7 @@
 
 package org.investovator.controller.command.ann;
 
+import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.command.GameCommand;
 
 /**
@@ -25,11 +26,16 @@ import org.investovator.controller.command.GameCommand;
  * @author: ishan
  * @version: ${Revision}
  */
-public interface ANNGameCommand extends GameCommand {
+public abstract class ANNGameCommand implements GameCommand {
 
+    NNGamingFacade facade = null;
     /**
      * Used to set the Facade for the ANN game
      * @param facade
      */
-    public void setFacade();
+    public void setFacade(NNGamingFacade facade){
+
+        this.facade = facade;
+
+    }
 }

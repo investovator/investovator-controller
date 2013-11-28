@@ -18,17 +18,33 @@
 
 package org.investovator.controller.nngaming;
 
+import org.investovator.ann.neuralnet.NNManager;
 import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
+import org.investovator.controller.command.ann.ANNGameCommand;
+import org.investovator.controller.command.exception.CommandExecutionException;
+import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
 import org.investovator.core.commons.events.GameEventListener;
+import org.investovator.core.data.api.utils.TradingDataAttribute;
+
+import java.util.ArrayList;
 
 /**
+ * @author Hasala Surasinghe
  * @author Amila Surendra
  * @version $Revision
  */
 public class NNGameFacade implements GameFacade {
+
+    private NNGamingFacade nnGamingFacade;
+
+    public NNGameFacade(){
+
+        nnGamingFacade = NNGamingFacade.getInstance();
+
+    }
 
     @Override
     public void registerListener(GameEventListener listener) {
@@ -54,7 +70,14 @@ public class NNGameFacade implements GameFacade {
 
     @Override
     public void setupGame(Object[] configurations) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+        ArrayList<TradingDataAttribute> attributes = (ArrayList<TradingDataAttribute>) configurations[0];
+        ArrayList<String> stockIDs = (ArrayList<String>) configurations[1];
+        ArrayList<String> analysisStockIDs = (ArrayList<String>) configurations[2];
+
+        NNManager nnManager = new NNManager(attributes,stockIDs,analysisStockIDs);
+        nnManager.createGamingNeuralNetworks();
+        nnManager.createAnalysisNeuralNetworks();
     }
 
     @Override
@@ -63,7 +86,14 @@ public class NNGameFacade implements GameFacade {
     }
 
     @Override
-    public void runCommand(GameCommand command) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
+        if(command instanceof ANNGameCommand){
+            ANNGameCommand nnCommand=(ANNGameCommand)command;
+            nnCommand.setFacade(this.nnGamingFacade);
+            nnCommand.execute();
+        }
+        else{
+            throw new CommandSettingsException("Invalid command for ANN Gaming engine");
+        }
     }
 }
