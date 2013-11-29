@@ -57,7 +57,7 @@ public class DataPlaybackGameFacadeTest {
         attributes.add(TradingDataAttribute.DAY);
         attributes.add(TradingDataAttribute.CLOSING_PRICE);
 
-        GameConfiguration config=new GameConfigurationImpl(startDateObject,stocks,true,
+        GameConfiguration config=new GameConfigurationImpl(startDateObject,stocks,true,"instance",
                 GameTypesImpl.DAILY_SUMMARY_CLOSING_PRICE_GAME);
 
         facade.setupGame(new GameConfiguration[]{config});
@@ -94,7 +94,7 @@ public class DataPlaybackGameFacadeTest {
         attributes.add(TradingDataAttribute.DAY);
         attributes.add(TradingDataAttribute.CLOSING_PRICE);
 
-        GameConfiguration config=new GameConfigurationImpl(startDateObject,stocks,true,
+        GameConfiguration config=new GameConfigurationImpl(startDateObject,stocks,true,"instance",
                 GameTypesImpl.DAILY_SUMMARY_CLOSING_PRICE_GAME);
 
         facade.setupGame(new GameConfiguration[]{config});
