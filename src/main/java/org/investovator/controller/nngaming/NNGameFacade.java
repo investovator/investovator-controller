@@ -19,6 +19,7 @@
 package org.investovator.controller.nngaming;
 
 import org.investovator.ann.neuralnet.NNManager;
+import org.investovator.ann.nngaming.EventScheduler;
 import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
@@ -26,6 +27,8 @@ import org.investovator.controller.command.ann.ANNGameCommand;
 import org.investovator.controller.command.exception.CommandExecutionException;
 import org.investovator.controller.command.exception.CommandSettingsException;
 import org.investovator.controller.utils.enums.GameModes;
+import org.investovator.controller.utils.events.GameCreationProgressChanged;
+import org.investovator.core.commons.events.GameEvent;
 import org.investovator.core.commons.events.GameEventListener;
 import org.investovator.core.data.api.utils.TradingDataAttribute;
 
@@ -39,33 +42,38 @@ import java.util.ArrayList;
 public class NNGameFacade implements GameFacade {
 
     private NNGamingFacade nnGamingFacade;
+    private ArrayList<GameEventListener> listeners;
 
     public NNGameFacade(){
 
+        listeners = new ArrayList<>();
         nnGamingFacade = NNGamingFacade.getInstance();
 
     }
 
     @Override
     public void registerListener(GameEventListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(!listeners.contains(listener)){
+            listeners.add(listener);
+        }
     }
 
     @Override
     public void removeListener(GameEventListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(listeners.contains(listener)){
+            listeners.remove(listener);
+        }
     }
 
     @Override
     public boolean startGame() {
-        NNGamingFacade nnGamingFacade = NNGamingFacade.getInstance();
         nnGamingFacade.startGame();
         return true;
     }
 
     @Override
     public void stopGame() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        nnGamingFacade.stopGame();
     }
 
     @Override
@@ -74,10 +82,35 @@ public class NNGameFacade implements GameFacade {
         ArrayList<TradingDataAttribute> attributes = (ArrayList<TradingDataAttribute>) configurations[0];
         ArrayList<String> stockIDs = (ArrayList<String>) configurations[1];
         ArrayList<String> analysisStockIDs = (ArrayList<String>) configurations[2];
+        int daysCount = (int) configurations[3];
+        int speedFactor = (int) configurations[4];
+
+        nnGamingFacade.setDaysCount(daysCount);
+        EventScheduler.getInstance().setSpeedFactor(speedFactor);
+
+        final int target = (stockIDs.size() * 6) + (stockIDs.size() * (analysisStockIDs.size() - 1));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < (target+1); i++) {
+
+                    try {
+                        Thread.sleep(2000);
+                        notifyListeners(new GameCreationProgressChanged(GameModes.NN_GAME, (((float)i)/target) ));
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
 
         NNManager nnManager = new NNManager(attributes,stockIDs,analysisStockIDs);
         nnManager.createGamingNeuralNetworks();
         nnManager.createAnalysisNeuralNetworks();
+
     }
 
     @Override
@@ -106,4 +139,11 @@ public class NNGameFacade implements GameFacade {
             throw new CommandSettingsException("Invalid command for ANN Gaming engine");
         }
     }
+
+    private void notifyListeners(GameEvent event){
+        for(GameEventListener listener : listeners){
+            listener.eventOccurred(event);
+        }
+    }
+
 }
