@@ -19,7 +19,7 @@
 package org.investovator.controller.nngaming;
 
 import org.investovator.ann.neuralnet.NNManager;
-import org.investovator.ann.nngaming.EventScheduler;
+import org.investovator.ann.nngaming.eventmanager.EventScheduler;
 import org.investovator.ann.nngaming.NNGamingFacade;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
@@ -105,7 +105,6 @@ public class NNGameFacade implements GameFacade {
                 }
             }
         }).start();
-
 
         NNManager nnManager = new NNManager(attributes,stockIDs,analysisStockIDs);
         nnManager.createGamingNeuralNetworks();
