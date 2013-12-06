@@ -75,38 +75,63 @@ public class AgentGameFacade implements GameFacade {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean startGame() {
         startAgentGame();
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stopGame() {
         facade.terminateSimulation();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setupGame(Object[] configurations) {
 
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GameModes getGameMode() {
         return GameModes.AGENT_GAME;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return  "Artificial Players Based Game";
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription() {
        return  "This is a game based on several artificial players configured to trade using different trading " +
                "strategies.";
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException {
         if(command instanceof AgentGameCommand){
@@ -119,12 +144,19 @@ public class AgentGameFacade implements GameFacade {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     private void notifyListeners(GameEvent event){
         for(GameEventListener listener : listeners){
             listener.eventOccurred(event);
         }
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     public void registerListener(GameEventListener listener){
         listeners.add(listener);
     }
