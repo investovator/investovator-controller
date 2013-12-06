@@ -23,10 +23,10 @@
     <dependencies>
 
         <!--Added for investovator timeline-->
-        <bean id="currentPriceTimeSeriesReportVariables$stockID" class="net.sourceforge.jasa.report.timeseries.CurrentPriceReportTimeseriesVariables">
+        <bean id="currentPriceTimeSeriesReportVariables$stockID" class="org.investovator.agentsimulation.multiasset.report.timeseries.CurrentPriceReportTimeseriesVariables">
         </bean>
 
-        <bean id="spreadTimeSeriesReportVariables$stockID" class="net.sourceforge.jasa.report.timeseries.SpreadReportTimeseriesVariables">
+        <bean id="spreadTimeSeriesReportVariables$stockID" class="org.investovator.agentsimulation.multiasset.report.timeseries.SpreadReportTimeseriesVariables">
         </bean>
         <!--Added for investovator timeline-->
 
