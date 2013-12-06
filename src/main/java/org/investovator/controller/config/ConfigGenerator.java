@@ -22,15 +22,9 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.investovator.core.commons.configuration.ConfigLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -140,26 +134,35 @@ public class ConfigGenerator {
         }
     }
 
-    /*
-    public String[] getSimulationProperties(){
-        String[] properties = {"No of Days", "Length of Day"};
-        return properties;
-    }
-
+    /**
+     * Sets the simulation property.
+     * @param property property name
+     * @param value property value
+     */
     public void setSimulationProperty(String property, String value){
         properties.put(property,value);
     }
-      */
 
-    //Should changed to better way
+    /**
+     * Overrides initial price.
+     * @param price
+     */
     public void setInitialPrice(float price){
         properties.put("$initialPrice",Float.toString(price));
     }
 
+    /**
+     * Overides no of days.
+     * @param days
+     */
     public void setNoOfDays(int days){
         properties.put("$maximumDays",Integer.toString(days));
     }
 
+    /**
+     * Sets the speed factor of the simulation.
+     * @param speedRatio
+     */
     public void setSpeedFactor(float speedRatio){
         //Should calculate and put
 

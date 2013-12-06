@@ -24,21 +24,37 @@ public class ReportGenerator {
     String outputTemplateDoc;
     Document outputDoc;
 
+    /**
+     * Creates a report generator with given template.
+     * @param templateFile path to the template file.
+     */
     public ReportGenerator(String templateFile){
         parser = new XMLParser(templateFile);
         this.templateDoc = parser.getXMLDocumentModel();
 
     }
 
+    /**
+     * Sets the template for output document.
+     * @param outputTemplateDoc Path to template file.
+     */
     public void setOutputTemplateDoc(String outputTemplateDoc) {
         this.outputTemplateDoc = outputTemplateDoc;
     }
 
+
+    /**
+     * Set output path.
+     * @param path path to create output file.
+     */
     public void setOutputPath(String path){
         fileToBeSaved = path;
     }
 
-
+    /**
+     * Reads the template file and returns the supported report types
+     * @return Supported report types.
+     */
     public String[] getSupportedReports(){
 
         String[] agentNames;
@@ -63,6 +79,11 @@ public class ReportGenerator {
         return agentNames;
     }
 
+    /**
+     * Returns the dependency beans of a given report type.
+     * @param reportType Type of the report given by getSupportedReports() method.
+     * @return
+     */
     public String[] getDependencyReportBeans(String reportType){
 
         String[] beanNames;
@@ -89,6 +110,10 @@ public class ReportGenerator {
     }
 
 
+    /**
+     * Creates a report bean file with current settings for the given stock symbol.
+     * @param stockID name of the stock.
+     */
     public void generateXML(String stockID){
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
