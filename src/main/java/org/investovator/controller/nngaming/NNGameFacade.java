@@ -19,8 +19,10 @@
 package org.investovator.controller.nngaming;
 
 import org.investovator.ann.neuralnet.NNManager;
-import org.investovator.ann.nngaming.eventmanager.EventScheduler;
 import org.investovator.ann.nngaming.NNGamingFacade;
+import org.investovator.ann.nngaming.eventmanager.EventScheduler;
+import org.investovator.ann.nngaming.eventmanager.MarketEventReceiver;
+import org.investovator.ann.nngaming.eventmanager.events.GameOverEvent;
 import org.investovator.controller.GameFacade;
 import org.investovator.controller.command.GameCommand;
 import org.investovator.controller.command.ann.ANNGameCommand;
@@ -73,6 +75,7 @@ public class NNGameFacade implements GameFacade {
 
     @Override
     public void stopGame() {
+        MarketEventReceiver.getInstance().setValue(new GameOverEvent());
         nnGamingFacade.stopGame();
     }
 
@@ -88,15 +91,15 @@ public class NNGameFacade implements GameFacade {
         nnGamingFacade.setDaysCount(daysCount);
         EventScheduler.getInstance().setSpeedFactor(speedFactor);
 
-        final int target = (stockIDs.size() * 6) + (stockIDs.size() * (analysisStockIDs.size() - 1));
+        final int target = (stockIDs.size() * 6) + (stockIDs.size() * (analysisStockIDs.size()));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < (target+1); i++) {
+                for (int i = 0; i < target+1; i++) {
 
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(4000);
                         notifyListeners(new GameCreationProgressChanged(GameModes.NN_GAME, (((float)i)/target) ));
 
                     } catch (InterruptedException e) {
