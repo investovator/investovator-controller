@@ -27,23 +27,24 @@ public class ModelGenerator {
     XMLParser parser;
     Document templateDoc;
 
-    public void setOutputTemplateDoc(String outputTemplateDoc) {
-        this.outputTemplateDoc = outputTemplateDoc;
-    }
-
     String outputTemplateDoc;
+
     Document outputDoc;
-
     private String stockID;
-    private String outputFile;
 
+    private String outputFile;
     /*Variables for storing external properties*/
     private HashMap<String,AgentProperties> agentProperties;
+
     private ArrayList<String> reports;
     private HashMap<String,String> simulationProperties;
     private String propertyFileName;
 
 
+    /**
+     * Creates a model generator of given template file.
+     * @param templateFile path to the template file.
+     */
     public ModelGenerator(String templateFile){
         parser = new XMLParser(templateFile);
         templateDoc = parser.getXMLDocumentModel();
@@ -54,15 +55,37 @@ public class ModelGenerator {
         simulationProperties = new HashMap<String, String>();
     }
 
+    /**
+     * Set output template document path.
+     * @param outputTemplateDoc
+     */
+    public void setOutputTemplateDoc(String outputTemplateDoc) {
+        this.outputTemplateDoc = outputTemplateDoc;
+    }
 
+
+    /**
+     * Set the stock symbol.
+     * @param stockID stock symbol.
+     */
     public void setStockID(String stockID){
         this.stockID = stockID;
     }
 
+
+    /**
+     * Set path to save the final configuration document.
+     * @param outputFile path to save the output file.
+     */
     public void setOutputFile(String outputFile){
         this.outputFile = outputFile;
     }
 
+
+    /**
+     * Set path to the common property file.
+     * @param fileURL url to the property file.
+     */
     public void setPropertyFileName(String fileURL){
         this.propertyFileName = fileURL;
     }
@@ -70,7 +93,7 @@ public class ModelGenerator {
 
     /**
      * Returns the Types of Agents supported by the System
-     * @return
+     * @return Supported agent types.
      */
     public String[] getSupportedAgentTypes(){
 
@@ -107,6 +130,11 @@ public class ModelGenerator {
         agentProperties.put(agentType,properties);
     }
 
+
+    /**
+     * Adds a dependency to reports needed by the created mode configuration.
+     * @param beanNames
+     */
     public void addDependencyReportBean(String[] beanNames){
 
         for (String beanName : beanNames) {
@@ -114,12 +142,20 @@ public class ModelGenerator {
         }
     }
 
+
+    /**
+     * Adds a simulation property to the simulation.
+     * @param propertyName name of the property.
+     * @param value Property value.
+     */
     public void addSimulationProperty(String propertyName, String value){
         simulationProperties.put(propertyName,value);
     }
 
 
-
+    /**
+     * Creates the final model configuration xml with current settings.
+     */
     public void createModelConfig(){
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -147,7 +183,10 @@ public class ModelGenerator {
 
     }
 
-
+    /**
+     * Add agents
+     * @param rootElement
+     */
     private void addAgents(Element rootElement){
 
         Iterator agentIterator = agentProperties.keySet().iterator();
@@ -161,6 +200,10 @@ public class ModelGenerator {
     }
 
 
+    /**
+     * replaces the dependencies placeholder.
+     * @param rootElement
+     */
     private void addGlobalDependencies(Element rootElement){
         XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -184,7 +227,11 @@ public class ModelGenerator {
     }
 
 
-
+    /**
+     * Replaces the simulation placeholder,
+     * @param parent
+     * @param replacements
+     */
     private void addSimulation(Element parent , HashMap<String,String> replacements){
 
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -206,9 +253,11 @@ public class ModelGenerator {
     }
 
 
-
-
-
+    /**
+     * Adds controller placeholder.
+     * @param parent
+     * @param replacements
+     */
     private void addController(Element parent, HashMap<String,String> replacements){
 
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -232,7 +281,11 @@ public class ModelGenerator {
 
     }
 
-
+    /**
+     * Adds property configurer.
+     * @param parent parent XML element,
+     * @param url url of the property file.
+     */
     private void addPropertyConfigurer(Element parent, String url){
         XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -254,6 +307,11 @@ public class ModelGenerator {
         }
     }
 
+
+    /**
+     * Replaces reports placeholder.
+     * @param controllerBean
+     */
     private void replaceReportsPlaceholder(Element controllerBean){
 
 
@@ -284,6 +342,10 @@ public class ModelGenerator {
 
     }
 
+    /**
+     * Adds population placeholder.
+     * @param parent
+     */
     private void addPopulation(Element parent){
 
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -322,7 +384,12 @@ public class ModelGenerator {
     }
 
 
-
+    /**
+     * Replaces the given placeholder with replacement text.
+     * @param source
+     * @param placeholder
+     * @param replacement
+     */
     private void replacePlaceHolder(Node source, String placeholder, String replacement){
 
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -350,8 +417,9 @@ public class ModelGenerator {
     }
 
 
-
-
+    /**
+     * Creates final XML
+     */
     private void createXML(){
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = null;
@@ -368,7 +436,12 @@ public class ModelGenerator {
         }
     }
 
-
+    /**
+     * Adds an agent of given type and size.
+     * @param agent
+     * @param size
+     * @param rootElement
+     */
     private void addAgent(String agent, int size ,Element rootElement) {
 
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -389,7 +462,7 @@ public class ModelGenerator {
     }
 
 
-    //Hardcoding for now
+    //Hard Coding for now
     private String getPopulationBeanName(String populationType){
 
         if(populationType.equals("Linear Combination Traders")) return "linearCombinationTraders$stockID";
@@ -399,8 +472,6 @@ public class ModelGenerator {
 
         else return null;
     }
-
-
 
 
     /**

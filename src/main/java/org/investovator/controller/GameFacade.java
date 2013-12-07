@@ -31,22 +31,59 @@ import org.investovator.core.commons.events.GameEventListener;
  */
 public interface GameFacade {
 
+    /**
+     * Register a listener with game facade.
+     * @param listener GameEventListener
+     */
     public void registerListener(GameEventListener listener);
 
+    /**
+     * Remove a listener with game facade.
+     * @param listener GameEventListener
+     */
     public void removeListener(GameEventListener listener);
 
+    /**
+     * Starts the game represented by the facade.
+     */
     public boolean startGame();
 
+    /**
+     * Stop the represented by the facade.
+     */
     public void stopGame();
 
+    /**
+     * Setup Game configuration
+     * @param configurations
+     */
     public void setupGame(Object[] configurations);
 
+    /**
+     * Returns the game mode controlled by the facade.
+     * @return GameModes instance representing current game mode.
+     */
     public GameModes getGameMode();
 
+    /**
+     * Returns the name of the game controlled by the facade.
+     * @return String representing game name.
+     */
     public String getName();
 
+
+    /**
+     * Returns the description of the game controlled by the facade.
+     * @return
+     */
     public String getDescription();
 
+    /**
+     * Run the given GameCommand.
+     * @param command command to run.
+     * @throws CommandSettingsException
+     * @throws CommandExecutionException
+     */
     public void runCommand(GameCommand command) throws CommandSettingsException, CommandExecutionException;
 
 }

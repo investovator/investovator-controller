@@ -45,11 +45,17 @@ public class GameControllerImpl implements GameController {
         gameStates = new HashMap<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static synchronized GameController getInstance() {
         if (instance == null) instance = new GameControllerImpl();
         return instance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String createGameInstance(GameModes type) throws GameCreationException {
         Collection<GameFacade> facades = gameInstances.values();
@@ -67,6 +73,9 @@ public class GameControllerImpl implements GameController {
         return type.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeGameInstance(String instance) {
 
@@ -82,6 +91,10 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getGameInstances() {
         List<String> instanceList = new ArrayList<>();
@@ -89,16 +102,28 @@ public class GameControllerImpl implements GameController {
         return instanceList;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void registerListener(String instance, GameEventListener listener) {
         gameInstances.get(instance).registerListener(listener);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeListener(String instance, GameEventListener listener) {
         gameInstances.get(instance).removeListener(listener);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean startGame(String instance) throws GameProgressingException {
         boolean status = gameInstances.get(instance).startGame();
@@ -108,6 +133,10 @@ public class GameControllerImpl implements GameController {
         return status;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stopGame(String instance) {
         gameInstances.get(instance).stopGame();
@@ -115,17 +144,29 @@ public class GameControllerImpl implements GameController {
         gameStates.remove(instance);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setupGame(String instance, Object[] configurations) {
         gameInstances.get(instance).setupGame(configurations);
         gameStates.put(instance, GameStates.CONFIGURED);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GameStates getCurrentGameState(String instance) {
         return gameStates.get(instance);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void runCommand(String instance, GameCommand command) throws CommandSettingsException,
             CommandExecutionException {
@@ -133,6 +174,10 @@ public class GameControllerImpl implements GameController {
 
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName(String instance) {
 
@@ -143,6 +188,10 @@ public class GameControllerImpl implements GameController {
         return null;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription(String instance) {
         if (gameInstances.containsKey(instance)) {
@@ -152,6 +201,10 @@ public class GameControllerImpl implements GameController {
         return null;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GameModes getGameMode(String instance) {
         if (gameInstances.containsKey(instance)) {

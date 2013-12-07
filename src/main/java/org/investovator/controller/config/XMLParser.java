@@ -34,15 +34,17 @@ public class XMLParser {
 
     private String inputFile;
 
+    /**
+     * Creates a XMLParser using given xml document path.
+     * @param file
+     */
     public XMLParser(String file){
         inputFile = file;
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 
-
         try {
             docBuilder = docFactory.newDocumentBuilder();
             doc = docBuilder.parse(inputFile);
-
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -52,17 +54,22 @@ public class XMLParser {
             e.printStackTrace();
         }
 
-
     }
 
-
+    /**
+     * Return the XML document model of the given document.
+     * @return Document model.
+     */
     public Document getXMLDocumentModel(){
          return  doc;
     }
 
 
+    /**
+     * Save the source file with a new name.
+     * @param fileName
+     */
     public void saveNewXML(String fileName){
-
 
        try {
 
