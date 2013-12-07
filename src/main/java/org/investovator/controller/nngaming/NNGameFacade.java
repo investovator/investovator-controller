@@ -88,6 +88,8 @@ public class NNGameFacade implements GameFacade {
         int daysCount = (int) configurations[3];
         int speedFactor = (int) configurations[4];
 
+        //set config parameters
+
         nnGamingFacade.setDaysCount(daysCount);
         EventScheduler.getInstance().setSpeedFactor(speedFactor);
 
