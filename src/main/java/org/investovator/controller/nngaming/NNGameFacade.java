@@ -99,7 +99,7 @@ public class NNGameFacade implements GameFacade {
                 for (int i = 0; i < target+1; i++) {
 
                     try {
-                        Thread.sleep(4000);
+                        Thread.sleep(5000);
                         notifyListeners(new GameCreationProgressChanged(GameModes.NN_GAME, (((float)i)/target) ));
 
                     } catch (InterruptedException e) {
